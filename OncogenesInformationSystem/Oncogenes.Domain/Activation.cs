@@ -1,10 +1,13 @@
-﻿namespace Oncogenes.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Oncogenes.Domain
 {
     public class Activation
     {
+        [Key]
         public int ActivationId { get; set; }
 
-        public int GeneId { get; set; }
+        public int OncogeneId { get; set; }
 
         public int DiseaseId { get; set; }
 
@@ -21,5 +24,9 @@
         public string TestingStatus { get; set; }
 
         public string TrialPrimaryCompletionDate { get; set; }
+
+        public Oncogene Oncogene { get; set; }
+        public Disease Disease { get; set; }
+        public List<Drug> Drugs { get; set; } = new();
     }
 }

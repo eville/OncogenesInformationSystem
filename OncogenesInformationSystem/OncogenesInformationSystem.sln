@@ -5,7 +5,11 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oncogenes.Domain", "Oncogenes.Domain\Oncogenes.Domain.csproj", "{C775D9E1-4672-45FE-8728-210A80F0A803}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oncogenes.App", "Oncogenes.App\Oncogenes.App.csproj", "{58AD5D55-44A4-49D5-9261-309C7FB61E12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oncogenes.App", "Oncogenes.App\Oncogenes.App.csproj", "{58AD5D55-44A4-49D5-9261-309C7FB61E12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oncogenes.Api", "Oncogenes.Api\Oncogenes.Api.csproj", "{B6FB4538-80EA-42A4-A860-0E6AC7AC92B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oncogenes.DAL", "Oncogenes.DAL\Oncogenes.DAL.csproj", "{16B3CF67-9DDF-4EF3-BB34-E2AA69022605}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{58AD5D55-44A4-49D5-9261-309C7FB61E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58AD5D55-44A4-49D5-9261-309C7FB61E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58AD5D55-44A4-49D5-9261-309C7FB61E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6FB4538-80EA-42A4-A860-0E6AC7AC92B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6FB4538-80EA-42A4-A860-0E6AC7AC92B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6FB4538-80EA-42A4-A860-0E6AC7AC92B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6FB4538-80EA-42A4-A860-0E6AC7AC92B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16B3CF67-9DDF-4EF3-BB34-E2AA69022605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B3CF67-9DDF-4EF3-BB34-E2AA69022605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B3CF67-9DDF-4EF3-BB34-E2AA69022605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B3CF67-9DDF-4EF3-BB34-E2AA69022605}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
