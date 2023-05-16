@@ -54,7 +54,7 @@ namespace Oncogenes.DAL
                .HasMany(o => o.Drugs)
                .WithMany(d => d.Oncogenes)
                     .UsingEntity<Dictionary<string, object>>(
-                       "OncogeneDrug",
+                       "OncogeneResistanceToDrug",
                        j => j.HasOne<Drug>().WithMany().HasForeignKey("DrugId"),
                        j => j.HasOne<Oncogene>().WithMany().HasForeignKey("OncogeneId")
                );
