@@ -6,7 +6,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Oncogenes.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class DiseaseCode : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,10 +20,7 @@ namespace Oncogenes.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Code = table.Column<string>(type: "longtext", nullable: false),
-                    CodeLevel = table.Column<int>(type: "int", nullable: false),
-                    OrphaCode = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,6 +71,30 @@ namespace Oncogenes.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Oncogenes", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "DiseaseCodes",
+                columns: table => new
+                {
+                    DiseaseCodeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    DiseaseId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "longtext", nullable: false),
+                    CodeDescription = table.Column<string>(type: "longtext", nullable: false),
+                    CodeLevel = table.Column<int>(type: "int", nullable: false),
+                    OrphaCode = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiseaseCodes", x => x.DiseaseCodeId);
+                    table.ForeignKey(
+                        name: "FK_DiseaseCodes_Diseases_DiseaseId",
+                        column: x => x.DiseaseId,
+                        principalTable: "Diseases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -137,7 +158,7 @@ namespace Oncogenes.DAL.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OncogeneDrug",
+                name: "OncogeneResistanceToDrug",
                 columns: table => new
                 {
                     DrugId = table.Column<int>(type: "int", nullable: false),
@@ -145,15 +166,15 @@ namespace Oncogenes.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OncogeneDrug", x => new { x.DrugId, x.OncogeneId });
+                    table.PrimaryKey("PK_OncogeneResistanceToDrug", x => new { x.DrugId, x.OncogeneId });
                     table.ForeignKey(
-                        name: "FK_OncogeneDrug_Drugs_DrugId",
+                        name: "FK_OncogeneResistanceToDrug_Drugs_DrugId",
                         column: x => x.DrugId,
                         principalTable: "Drugs",
                         principalColumn: "DrugId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OncogeneDrug_Oncogenes_OncogeneId",
+                        name: "FK_OncogeneResistanceToDrug_Oncogenes_OncogeneId",
                         column: x => x.OncogeneId,
                         principalTable: "Oncogenes",
                         principalColumn: "Id",
@@ -222,6 +243,11 @@ namespace Oncogenes.DAL.Migrations
                 column: "OncogeneId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DiseaseCodes_DiseaseId",
+                table: "DiseaseCodes",
+                column: "DiseaseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DiseaseMedicalTests_MedicalTestId",
                 table: "DiseaseMedicalTests",
                 column: "MedicalTestId");
@@ -232,8 +258,8 @@ namespace Oncogenes.DAL.Migrations
                 column: "DrugId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OncogeneDrug_OncogeneId",
-                table: "OncogeneDrug",
+                name: "IX_OncogeneResistanceToDrug_OncogeneId",
+                table: "OncogeneResistanceToDrug",
                 column: "OncogeneId");
 
             migrationBuilder.CreateIndex(
@@ -246,13 +272,16 @@ namespace Oncogenes.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DiseaseCodes");
+
+            migrationBuilder.DropTable(
                 name: "DiseaseMedicalTests");
 
             migrationBuilder.DropTable(
                 name: "DrugActivation");
 
             migrationBuilder.DropTable(
-                name: "OncogeneDrug");
+                name: "OncogeneResistanceToDrug");
 
             migrationBuilder.DropTable(
                 name: "OncogenesDiseases");

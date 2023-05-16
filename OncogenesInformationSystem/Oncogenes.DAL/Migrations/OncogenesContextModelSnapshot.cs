@@ -129,7 +129,7 @@ namespace Oncogenes.DAL.Migrations
 
             modelBuilder.Entity("Oncogenes.Domain.DiseaseCode", b =>
                 {
-                    b.Property<int>("CodeId")
+                    b.Property<int>("DiseaseCodeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -150,11 +150,11 @@ namespace Oncogenes.DAL.Migrations
                     b.Property<string>("OrphaCode")
                         .HasColumnType("longtext");
 
-                    b.HasKey("CodeId");
+                    b.HasKey("DiseaseCodeId");
 
                     b.HasIndex("DiseaseId");
 
-                    b.ToTable("DiseaseCode");
+                    b.ToTable("DiseaseCodes");
                 });
 
             modelBuilder.Entity("Oncogenes.Domain.Drug", b =>

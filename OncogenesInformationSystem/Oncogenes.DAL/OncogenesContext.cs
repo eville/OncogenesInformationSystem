@@ -10,6 +10,7 @@ namespace Oncogenes.DAL
         }
 
         public DbSet<Disease> Diseases { get; set; }
+        public DbSet<DiseaseCode> DiseaseCodes { get; set; }
 
         public DbSet<Oncogene> Oncogenes { get; set; }
 
@@ -59,10 +60,10 @@ namespace Oncogenes.DAL
                        j => j.HasOne<Oncogene>().WithMany().HasForeignKey("OncogeneId")
                );
 
-            modelBuilder.Entity<DiseaseCode>()
-                .HasOne(dc => dc.Disease)
-                .WithMany(d => d.DiseaseCodes)
-                .HasForeignKey(dc => dc.DiseaseId);
+            modelBuilder.Entity<Disease>()
+            .HasMany(d => d.DiseaseCodes)
+            .WithOne(dc => dc.Disease)
+            .HasForeignKey(dc => dc.DiseaseId);
 
 
             modelBuilder.Entity<MedicalTest>()

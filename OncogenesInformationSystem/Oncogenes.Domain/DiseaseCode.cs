@@ -5,7 +5,7 @@ namespace Oncogenes.Domain
     public  class DiseaseCode
     {
         [Key]
-        public int CodeId { get; set; }
+        public int DiseaseCodeId { get; set; }
         
         public int DiseaseId { get; set; }
 

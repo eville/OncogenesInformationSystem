@@ -10,8 +10,8 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    [Migration("20230516072021_RenamingTableOncogeneDrug")]
-    partial class RenamingTableOncogeneDrug
+    [Migration("20230516094829_DiseaseCode")]
+    partial class DiseaseCode
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,23 +121,43 @@ namespace Oncogenes.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Diseases");
+                });
+
+            modelBuilder.Entity("Oncogenes.Domain.DiseaseCode", b =>
+                {
+                    b.Property<int>("DiseaseCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CodeDescription")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("CodeLevel")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
 
                     b.Property<string>("OrphaCode")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("DiseaseCodeId");
 
-                    b.ToTable("Diseases");
+                    b.HasIndex("DiseaseId");
+
+                    b.ToTable("DiseaseCodes");
                 });
 
             modelBuilder.Entity("Oncogenes.Domain.Drug", b =>
@@ -280,6 +300,17 @@ namespace Oncogenes.DAL.Migrations
                     b.Navigation("Oncogene");
                 });
 
+            modelBuilder.Entity("Oncogenes.Domain.DiseaseCode", b =>
+                {
+                    b.HasOne("Oncogenes.Domain.Disease", "Disease")
+                        .WithMany("DiseaseCodes")
+                        .HasForeignKey("DiseaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Disease");
+                });
+
             modelBuilder.Entity("OncogenesDiseases", b =>
                 {
                     b.HasOne("Oncogenes.Domain.Disease", null)
@@ -298,6 +329,8 @@ namespace Oncogenes.DAL.Migrations
             modelBuilder.Entity("Oncogenes.Domain.Disease", b =>
                 {
                     b.Navigation("Activations");
+
+                    b.Navigation("DiseaseCodes");
                 });
 
             modelBuilder.Entity("Oncogenes.Domain.Oncogene", b =>
