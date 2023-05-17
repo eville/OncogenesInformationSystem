@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<OncogenesContext>(options => options.UseMySQL(""));
+builder.Services.AddDbContext<OncogenesContext>(options => options.UseMySQL("Server=oncogenes-db-server.mysql.database.azure.com; Port=3306; Database=Oncogenes; Uid=oncogenes_db_admin; Pwd=Onkogenai!2023; SslMode=Preferred;"));
 builder.Services.AddScoped<IOncogenesRepository, OncogenesRepository>();
 
 var app = builder.Build();

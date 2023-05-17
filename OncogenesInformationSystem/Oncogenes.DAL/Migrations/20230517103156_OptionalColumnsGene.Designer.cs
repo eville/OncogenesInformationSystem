@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oncogenes.DAL;
 
@@ -10,9 +11,11 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    partial class OncogenesContextModelSnapshot : ModelSnapshot
+    [Migration("20230517103156_OptionalColumnsGene")]
+    partial class OptionalColumnsGene
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

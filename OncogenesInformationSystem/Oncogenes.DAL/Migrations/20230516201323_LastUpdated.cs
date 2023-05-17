@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
@@ -6,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Oncogenes.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class DiseaseCode : Migration
+    public partial class LastUpdated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,8 +35,7 @@ namespace Oncogenes.DAL.Migrations
                 {
                     DrugId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    ATC = table.Column<string>(type: "longtext", nullable: false),
-                    GenericName = table.Column<string>(type: "longtext", nullable: false)
+                    GenericDrugName = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,7 +66,8 @@ namespace Oncogenes.DAL.Migrations
                     Symbol = table.Column<string>(type: "longtext", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     CancerSyndrome = table.Column<string>(type: "longtext", nullable: false),
-                    TumorTypes = table.Column<string>(type: "longtext", nullable: false)
+                    TumorTypes = table.Column<string>(type: "longtext", nullable: false),
+                    RoleInCancer = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,14 +131,21 @@ namespace Oncogenes.DAL.Migrations
                     ActivationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     OncogeneId = table.Column<int>(type: "int", nullable: false),
-                    DiseaseId = table.Column<int>(type: "int", nullable: false),
                     MutationRemark = table.Column<string>(type: "longtext", nullable: false),
-                    DrugCombination = table.Column<string>(type: "longtext", nullable: false),
                     ActionabilityRank = table.Column<string>(type: "longtext", nullable: false),
-                    DevelopmentStatus = table.Column<string>(type: "longtext", nullable: false),
+                    DevelopmentStatus = table.Column<int>(type: "int", nullable: false),
                     TestingRequired = table.Column<string>(type: "longtext", nullable: false),
-                    TestingStatus = table.Column<string>(type: "longtext", nullable: false),
-                    TrialPrimaryCompletionDate = table.Column<string>(type: "longtext", nullable: false)
+                    TestingStatus = table.Column<int>(type: "int", nullable: false),
+                    TrialPrimaryCompletionDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    TrialStatus = table.Column<int>(type: "int", nullable: true),
+                    CompletionStatus = table.Column<int>(type: "int", nullable: true),
+                    Info = table.Column<string>(type: "longtext", nullable: true),
+                    NumberOfPatients = table.Column<int>(type: "int", nullable: true),
+                    TreatedNumber = table.Column<int>(type: "int", nullable: true),
+                    ControlNumber = table.Column<int>(type: "int", nullable: true),
+                    ControlTreatment = table.Column<string>(type: "longtext", nullable: true),
+                    LastUpdated = table.Column<DateOnly>(type: "date", nullable: true),
+                    DiseaseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -146,8 +154,7 @@ namespace Oncogenes.DAL.Migrations
                         name: "FK_Activations_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
                         principalTable: "Diseases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Activations_Oncogenes_OncogeneId",
                         column: x => x.OncogeneId,

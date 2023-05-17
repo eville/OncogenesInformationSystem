@@ -10,7 +10,7 @@ namespace Oncogenes.Domain
         [Required]
         public string Name { get; set; }
 
-        public List<Oncogene> Oncogenes { get; set; } = new();
+        public List<Gene> Oncogenes { get; set; } = new();
 
         public List<Activation> Activations { get; set; } = new();
 
@@ -18,5 +18,7 @@ namespace Oncogenes.Domain
 
 
         public List<DiseaseCode> DiseaseCodes { get; set; } = new();
+
+        public List<Treatment> Treatments { get; set; } = new();
     }
 }

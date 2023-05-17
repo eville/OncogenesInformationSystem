@@ -2,7 +2,7 @@
 
 namespace Oncogenes.Domain
 {
-    public class Oncogene
+    public class Gene
     {
         [Key]
         public int Id { get; set; }
@@ -13,9 +13,9 @@ namespace Oncogenes.Domain
         [Required]
         public string Name { get; set; }
 
-        public string CancerSyndrome { get; set; }
+        public string? CancerSyndrome { get; set; }
 
-        public string TumorTypes { get; set; }
+        public string? TumorTypes { get; set; }
 
         public List<Disease> Diseases { get; set; } = new();
         public List<Drug> Drugs { get; set; } = new();

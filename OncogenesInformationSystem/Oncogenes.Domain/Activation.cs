@@ -9,24 +9,33 @@ namespace Oncogenes.Domain
 
         public int OncogeneId { get; set; }
 
-        public int DiseaseId { get; set; }
-
         public string MutationRemark { get; set; }
-
-        public string DrugCombination { get; set; }
 
         public string ActionabilityRank { get; set; }
 
-        public string DevelopmentStatus { get; set; }
+        public int DevelopmentStatus { get; set; }
 
         public string TestingRequired { get; set; }
 
-        public string TestingStatus { get; set; }
+        public DateOnly? TrialPrimaryCompletionDate { get; set; }
 
-        public string TrialPrimaryCompletionDate { get; set; }
+        public int? TrialStatus { get; set; }
 
-        public Oncogene Oncogene { get; set; }
-        public Disease Disease { get; set; }
+        public int? CompletionStatus { get; set; }
+        
+        public string? Info { get; set; }
+
+        public int? NumberOfPatients { get; set; }
+
+        public int? TreatedNumber { get; set; }
+
+        public int? ControlNumber { get; set; }
+
+        public string? ControlTreatment { get; set; }
+
+        public DateOnly? LastUpdated { get; set; }
+
+        public Gene Oncogene { get; set; }
         public List<Drug> Drugs { get; set; } = new();
     }
 }

@@ -12,7 +12,7 @@ namespace Oncogenes.DAL
         public DbSet<Disease> Diseases { get; set; }
         public DbSet<DiseaseCode> DiseaseCodes { get; set; }
 
-        public DbSet<Oncogene> Oncogenes { get; set; }
+        public DbSet<Gene> Oncogenes { get; set; }
 
         public DbSet<Drug> Drugs { get; set; }
 
@@ -23,24 +23,19 @@ namespace Oncogenes.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Oncogene>()
+            modelBuilder.Entity<Gene>()
                 .HasMany(o => o.Diseases)
                 .WithMany(d => d.Oncogenes)
                  .UsingEntity<Dictionary<string, object>>(
                     "OncogenesDiseases",
                     j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
-                    j => j.HasOne<Oncogene>().WithMany().HasForeignKey("OncogeneId")
+                    j => j.HasOne<Gene>().WithMany().HasForeignKey("OncogeneId")
             );
 
             modelBuilder.Entity<Activation>()
                 .HasOne(a => a.Oncogene)
                 .WithMany(o => o.Activations)
                 .HasForeignKey(a => a.OncogeneId);
-
-            modelBuilder.Entity<Activation>()
-                .HasOne(a => a.Disease)
-                .WithMany(d => d.Activations)
-                .HasForeignKey(a => a.DiseaseId);
 
             modelBuilder.Entity<Activation>()
                 .HasMany(a => a.Drugs)
@@ -51,13 +46,13 @@ namespace Oncogenes.DAL
                     j => j.HasOne<Activation>().WithMany().HasForeignKey("ActivationId")
                 );
 
-            modelBuilder.Entity<Oncogene>()
+            modelBuilder.Entity<Gene>()
                .HasMany(o => o.Drugs)
                .WithMany(d => d.Oncogenes)
                     .UsingEntity<Dictionary<string, object>>(
                        "OncogeneResistanceToDrug",
                        j => j.HasOne<Drug>().WithMany().HasForeignKey("DrugId"),
-                       j => j.HasOne<Oncogene>().WithMany().HasForeignKey("OncogeneId")
+                       j => j.HasOne<Gene>().WithMany().HasForeignKey("OncogeneId")
                );
 
             modelBuilder.Entity<Disease>()
@@ -74,6 +69,15 @@ namespace Oncogenes.DAL
                     j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
                     j => j.HasOne<MedicalTest>().WithMany().HasForeignKey("MedicalTestId")
                 );
+
+            modelBuilder.Entity<Treatment>()
+               .HasMany(m => m.Diseases)
+               .WithMany(d => d.Treatments)
+               .UsingEntity<Dictionary<string, object>>(
+                   "DiseaseTreatments",
+                   j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
+                   j => j.HasOne<Treatment>().WithMany().HasForeignKey("TreatmentId")
+               );
 
         }
     }

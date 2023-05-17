@@ -3,7 +3,7 @@ namespace Oncogenes.DAL.Repository
 {
     public interface IOncogenesRepository
     {
-        IEnumerable<Oncogene> GetAllGenes();
-        Oncogene GetGeneById(int geneId);
+        IEnumerable<Gene> GetAllGenes();
+        Gene GetGeneById(int geneId);
     }
 }

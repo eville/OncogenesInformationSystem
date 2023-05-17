@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oncogenes.DAL;
 
@@ -10,9 +11,11 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    partial class OncogenesContextModelSnapshot : ModelSnapshot
+    [Migration("20230517073451_RequiredNames")]
+    partial class RequiredNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,9 +212,14 @@ namespace Oncogenes.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CancerSyndrome")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RoleInCancer")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -220,6 +228,7 @@ namespace Oncogenes.DAL.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("TumorTypes")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

@@ -11,17 +11,17 @@ namespace Oncogenes.DAL.Repository
             _appDbContext = appDbContext;
         }
 
-        public IEnumerable<Oncogene> GetAllGenes()
+        public IEnumerable<Gene> GetAllGenes()
         {
-            return _appDbContext.Oncogenes;
+            return _appDbContext.Oncogenes.ToList();
         }
 
-        public Oncogene GetGeneById(int geneId)
+        public Gene GetGeneById(int geneId)
         {
             return _appDbContext.Oncogenes.FirstOrDefault(c => c.Id == geneId);
         }
 
-        public void AddGene(Oncogene gene)
+        public void AddGene(Gene gene)
         {
             _appDbContext.Oncogenes.Add(gene);
 
