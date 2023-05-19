@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oncogenes.Domain;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Oncogenes.DAL
 {
@@ -19,6 +20,10 @@ namespace Oncogenes.DAL
         public DbSet<Activation> Activations { get; set; }
 
         public DbSet<MedicalTest> MedicalTests { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

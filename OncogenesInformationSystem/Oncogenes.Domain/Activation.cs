@@ -17,7 +17,7 @@ namespace Oncogenes.Domain
 
         public string TestingRequired { get; set; }
 
-        public DateOnly? TrialPrimaryCompletionDate { get; set; }
+        public DateTime? TrialPrimaryCompletionDate { get; set; }
 
         public int? TrialStatus { get; set; }
 
@@ -33,7 +33,7 @@ namespace Oncogenes.Domain
 
         public string? ControlTreatment { get; set; }
 
-        public DateOnly? LastUpdated { get; set; }
+        public DateTime? LastUpdated { get; set; }
 
         public Gene Oncogene { get; set; }
         public List<Drug> Drugs { get; set; } = new();

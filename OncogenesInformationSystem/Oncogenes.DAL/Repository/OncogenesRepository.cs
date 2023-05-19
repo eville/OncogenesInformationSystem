@@ -1,4 +1,7 @@
-﻿using Oncogenes.Domain;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Oncogenes.Domain;
+using System.Linq;
 
 namespace Oncogenes.DAL.Repository
 {
@@ -11,14 +14,31 @@ namespace Oncogenes.DAL.Repository
             _appDbContext = appDbContext;
         }
 
-        public IEnumerable<Gene> GetAllGenes()
+        public async Task<IEnumerable<Gene>> GetAllGenes()
         {
-            return _appDbContext.Oncogenes.ToList();
+
+            //var r1 = _appDbContext.Oncogenes.ToList();
+
+
+            //var r2 = _appDbContext.Oncogenes
+            //    .Include(c => c.Diseases)
+            //    .ToList();
+
+            //var r3 = _appDbContext.Oncogenes
+            //    .Include(c => c.Drugs)
+            //    .ToList();
+
+            return await _appDbContext.Oncogenes
+                .Include(c => c.Diseases).ThenInclude(c => c.Treatments)
+                .Include(c => c.Drugs)
+                .Include(c => c.Activations).ThenInclude(c => c.Drugs)
+                .ToListAsync();
+
         }
 
-        public Gene GetGeneById(int geneId)
+        public async Task<Gene> GetGeneById(int geneId)
         {
-            return _appDbContext.Oncogenes.FirstOrDefault(c => c.Id == geneId);
+            return await _appDbContext.Oncogenes.FirstOrDefaultAsync(c => c.Id == geneId);
         }
 
         public void AddGene(Gene gene)
