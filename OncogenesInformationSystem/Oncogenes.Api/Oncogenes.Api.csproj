@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -17,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Oncogenes.App\Oncogenes.App.csproj" />
     <ProjectReference Include="..\Oncogenes.DAL\Oncogenes.DAL.csproj" />
     <ProjectReference Include="..\Oncogenes.Domain\Oncogenes.Domain.csproj" />
   </ItemGroup>

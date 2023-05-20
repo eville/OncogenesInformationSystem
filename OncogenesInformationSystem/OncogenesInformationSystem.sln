@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oncogenes.App", "Oncogenes.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oncogenes.Api", "Oncogenes.Api\Oncogenes.Api.csproj", "{B6FB4538-80EA-42A4-A860-0E6AC7AC92B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oncogenes.DAL", "Oncogenes.DAL\Oncogenes.DAL.csproj", "{16B3CF67-9DDF-4EF3-BB34-E2AA69022605}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oncogenes.DAL", "Oncogenes.DAL\Oncogenes.DAL.csproj", "{16B3CF67-9DDF-4EF3-BB34-E2AA69022605}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
