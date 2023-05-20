@@ -1,0 +1,60 @@
+﻿@page "/oncogenesoverview"
+
+<h2>Onkogenai</h2>
+
+@if (Oncogenes == null)
+{
+    <p><em>Kraunasi...</em></p>
+}
+else
+{
+    <table class="table table-light">
+        <thead class="table-primary">
+            <tr>
+                <th>Simbolis</th>
+                <th>Pavadinimas</th>
+                <th>Navikų tipai</th>
+                <th>Vėžio sindromas</th>
+                <th>Liga</th>
+                <th>Vaistai</th>
+                <th>Atsparumas vaistams</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var gene in Oncogenes)
+            {
+                <tr>
+                    <td>@gene.Symbol</td>
+                    <td>@gene.Name</td>
+                    <td>@gene.TumorTypes</td>
+                    <td>@gene.CancerSyndrome</td>
+                    <td>
+                        @foreach (var disease in gene.Diseases)
+                        {
+                            <p>@disease.Name</p>
+                        }
+                    </td>
+                    <td>
+                        @foreach (var activation in gene.Activations)
+                        {
+                            <div>
+                                @foreach (var drug in activation.Drugs)
+                                {
+                                    <p>@drug.GenericDrugName</p>
+                                }
+                            </div>
+                           
+                        }
+                    </td>
+                    <td>
+                        @foreach (var drug in gene.Drugs)
+                        {
+                            <p>@drug.GenericDrugName</p>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}

@@ -16,10 +16,9 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// write to get connection string from appsettings.json
 builder.Services.AddDbContext<OncogenesContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
-//builder.Services.AddDbContext<OncogenesContext>(options => options.UseMySQL(""));
 builder.Services.AddScoped<IOncogenesRepository, OncogenesRepository>();
+builder.Services.AddScoped<IDiseasesRepository, DiseasesRepository>();
 
 var app = builder.Build();
 

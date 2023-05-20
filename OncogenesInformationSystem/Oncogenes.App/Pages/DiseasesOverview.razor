@@ -1,0 +1,134 @@
+﻿@page "/diseasesoverview"
+
+<h2>Ligos</h2>
+
+@if (Diseases == null)
+{
+    <p><em>Kraunasi...</em></p>
+}
+else
+{
+    @foreach (var disease in Diseases)
+   {
+       <div class="card">
+           <div class="card-header">
+               <h3>@disease.Name</h3>
+           </div>
+           <div class="card-body">
+               <div>
+                    @if (disease.DiseaseCodes.Any())
+                    {
+                        <h5>TLK</h5>
+                        @foreach (var diseaseCode in disease.DiseaseCodes)
+                        {
+                            disease.DiseaseCodes.OrderBy(d => d.CodeLevel).ThenBy(d => d.Code);
+                            if (diseaseCode.CodeLevel == 1)
+                            {
+                                
+                            }
+                            <p>@diseaseCode.Code @diseaseCode.CodeDescription</p>
+                        }
+                    }
+                </div>
+                <div>
+                    <table class="table table-light">
+                     <thead class="table-primary">
+                          <tr>
+                                <th>Genai</th>
+                                <th>Tyrimai</th>
+                                <th>Gydymas</th>
+                          </tr>
+                     </thead>
+                     <tbody>
+                         <tr>
+                             <td>
+                                    @foreach (var gene in disease.Oncogenes)
+                                    {
+                                        <span>@gene.Symbol</span>
+                                        if (gene != disease.Oncogenes.Last())
+                                        {
+                                            <span>, </span>
+                                        }
+                                    }
+                             </td>
+                             <td>
+                                    <ul class="list-style">
+                                 @foreach(var medicalTest in disease.MedicalTests)
+                                 {
+                                        <li>@medicalTest.Name</li>
+                                            if (!String.IsNullOrEmpty(medicalTest.Note))
+                                        {
+                                                <small style="margin-bottom: 2px;">*@medicalTest.Note</small>
+                                        }
+                                       
+                                 }
+                                 </ul>
+                                </td>
+                             <td>
+                                 <ul class="list-style">
+                                @foreach (var treatment in disease.Treatments)
+                                {
+                                        <li>@treatment.Name</li>
+                                }
+                                    </ul>
+                             </td>
+                         </tr>                                                   
+                     </tbody>
+                    </table>
+                </div>
+               @*<p>@disease.Description</p>
+               <p>@disease.Symptoms</p>
+               <p>@disease.Treatment</p>*@
+           </div>
+       </div>
+   }
+   @* <table class="table table-light">
+        <thead class="table-primary">
+            <tr>
+                <th>Simbolis</th>
+                <th>Pavadinimas</th>
+                <th>Navikų tipai</th>
+                <th>Vėžio sindromas</th>
+                <th>Liga</th>
+                <th>Vaistai</th>
+                <th>Atsparumas vaistams</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var gene in Oncogenes)
+            {
+                <tr>
+                    <td>@gene.Symbol</td>
+                    <td>@gene.Name</td>
+                    <td>@gene.TumorTypes</td>
+                    <td>@gene.CancerSyndrome</td>
+                    <td>
+                        @foreach (var disease in gene.Diseases)
+                        {
+                            <p>@disease.Name</p>
+                        }
+                    </td>
+                    <td>
+                        @foreach (var activation in gene.Activations)
+                        {
+                            <div>
+                                @foreach (var drug in activation.Drugs)
+                                {
+                                    <p>@drug.GenericDrugName</p>
+                                }
+                            </div>
+
+                        }
+                    </td>
+                    <td>
+                        @foreach (var drug in gene.Drugs)
+                        {
+                            <p>@drug.GenericDrugName</p>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>*@
+}
