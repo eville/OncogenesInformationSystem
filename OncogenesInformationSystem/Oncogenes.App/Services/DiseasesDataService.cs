@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Oncogenes.Domain;
+﻿using Oncogenes.Domain;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 
@@ -27,10 +26,26 @@ namespace Oncogenes.App.Services
             }
             catch (Exception exception)
             {
-                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(GetDiseases), $"api/Oncogenes", exception);
+                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(GetDiseases), $"api/Diseases", exception);
                 return Array.Empty<Disease>();
             }
         }
+
+        public async Task<Disease> GetDiseaseById(int id)
+        {
+            try
+            {
+                Disease? disease = await JsonSerializer.DeserializeAsync<Disease>
+                          (await this.httpClient.GetStreamAsync($"api/Diseases/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve });
+                return disease;
+            }
+            catch (Exception exception)
+            {
+                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(GetDiseases), $"api/Diseases/{id}", exception);
+                return new Disease();
+            }
+        }
+
 
     }
 }

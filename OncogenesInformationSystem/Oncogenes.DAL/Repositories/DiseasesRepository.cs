@@ -20,5 +20,13 @@ namespace Oncogenes.DAL.Repository
                 .Include(d => d.Treatments)
                 .ToListAsync();
         }
+
+        public async Task<Disease?> GetDiseaseById(int id)
+        {
+            return await appDbContext.Diseases
+                .Include(d => d.MedicalTests)
+                .Include(d => d.Treatments)
+                .FirstOrDefaultAsync(d => d.Id == id);
+        }
     }
 }

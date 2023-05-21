@@ -25,9 +25,16 @@ namespace Oncogenes.Api.Controllers
 
         // GET api/<DiseaseController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Disease>> GetDiseaseById(int id)
         {
-            return "value";
+            var disease = await diseasesRepository.GetDiseaseById(id);
+
+            if (disease == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(disease);
         }
 
         // POST api/<DiseaseController>

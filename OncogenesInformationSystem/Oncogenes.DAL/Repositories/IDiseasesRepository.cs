@@ -5,5 +5,7 @@ namespace Oncogenes.DAL.Repository
     public interface IDiseasesRepository
     {
         Task<IEnumerable<Disease>> GetAllDiseases();
+
+        Task<Disease?> GetDiseaseById(int id);
     }
 }

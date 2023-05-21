@@ -1,0 +1,37 @@
+﻿@page "/diseaseedition"
+@page "/diseaseedition/{DiseaseId}"
+
+@if (Disease == null)
+{
+    <p><em>Kraunasi...</em></p>
+}
+else
+{
+    <section>
+        <EditForm Model="@Disease"></EditForm>
+        <h4>Liga</h4>
+        <div class="row mb-3">
+            <label for="diseaseName" class="col-form-label col-md-3">Ligos pavadinimas: </label>
+            <div class="col-md-8">
+                <InputText id="diseaseName" class="form-control col-md-8" @bind-Value="@Disease.Name" placeholder="Įveskite ligos pavadinimą"></InputText>
+                @*<ValidationMessage class="offset-md-3 col-md-8" For="@(() => Disease.Name)" />*@
+            </div>
+        </div>
+        <h4>Ligos diagnostiniai tyrimai</h4>
+        @*<div class="container">*@
+            @foreach (var diseaseMedicalTest in Disease.MedicalTests)
+            {
+                <div class="mb-3">
+                        <label for="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")">Tryimo pavadinimas:</label>
+                        <InputText id="@($"course{diseaseMedicalTest.MedicalTestId}")" class="form-control col-md-4" @bind-Value="diseaseMedicalTest.Name" />
+
+                        <label for="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")">Pastaba:</label>
+                        <InputTextArea id="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")" class="form-control col-md-8" @bind-Value="diseaseMedicalTest.Note" />                
+                </div>
+                @*<ValidationMessage For="@(() => course.Name)" />*@
+            }
+        @*</div>*@
+        
+
+    </section>
+}
