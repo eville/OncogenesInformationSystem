@@ -1,4 +1,6 @@
-INSERT INTO oncogenes (Id, Symbol, Name, CancerSyndrome, TumorTypes, RoleInCancer)
+use oncogenes;
+
+INSERT INTO oncogenes (Id, Symbol, Name, CancerSyndrome, TumorTypes)
 VALUES 
 (1, 'BRCA1', 'šeiminio krūties/kiaušidžių vėžio genas 1', 'paveldimas krūties ir kiaušidžių vėžys', 'kiaušidžių'),
 (2, 'BRCA2', 'šeimyninis krūties/kiaušidžių vėžio genas 2', 'paveldimas krūties ir kiaušidžių vėžys', 'krūties, kiaušidžių, kasos'),
@@ -50,17 +52,17 @@ VALUES
 ('Inkstų vėžys'),
 ('Burnos ertmės vėžys');
 
-INSERT INTO oncogenes.diseasecodes (DiseaseId, Code, CodeDescription, CodeLevel, OrphaCode)
+INSERT INTO oncogenes.diseasecodes (DiseaseId, Code, CodeType,  CodeDescription, CodeLevel)
 VALUES 
-(1, 'C 50.0', 'Spenelis ir areolė', 1, NULL),
-(1, 'C 50.1', 'Krūties centrinė dalis', 2, NULL),
-(1, 'C 50.2', 'Krūties viršutinis ir vidinis kvadrantas', 2, NULL),
-(1, 'C 50.3', 'Krūties apatinis ir vidinis kvadrantas', 2, NULL),
-(1, 'C 50.4', 'Krūties viršutinis ir išorinis kvadrantas', 2, NULL),
-(1, 'C 50.5', 'Krūties apatinis ir išorinis kvadrantas', 2, NULL),
-(1, 'C 50.6', 'Krūties pažastinė dalis', 2, NULL),
-(1, 'C 50.8', 'Krūties išplitęs pažeidimas', 2, NULL),
-(1, 'C 50.9', 'Krūtis, nepatikslinta', 2, NULL);
+(1, 'C 50.0', 0, 'Spenelis ir areolė', 1),
+(1, 'C 50.1', 0, 'Krūties centrinė dalis', 2),
+(1, 'C 50.2', 0, 'Krūties viršutinis ir vidinis kvadrantas', 2),
+(1, 'C 50.3', 0, 'Krūties apatinis ir vidinis kvadrantas', 2),
+(1, 'C 50.4', 0, 'Krūties viršutinis ir išorinis kvadrantas', 2),
+(1, 'C 50.5', 0, 'Krūties apatinis ir išorinis kvadrantas', 2),
+(1, 'C 50.6', 0, 'Krūties pažastinė dalis', 2),
+(1, 'C 50.8', 0, 'Krūties išplitęs pažeidimas', 2),
+(1, 'C 50.9', 0, 'Krūtis, nepatikslinta', 2); 
 
 INSERT INTO activations (OncogeneId, MutationRemark, ActionabilityRank, DevelopmentStatus, TestingRequired,
   TrialStatus, CompletionStatus, Info, NumberOfPatients, TreatedNumber, ControlNumber, ControlTreatment,
@@ -129,8 +131,25 @@ VALUES
 
 INSERT INTO oncogeneresistancetodrug (DrugId, OncogeneId)
 VALUES
+  (16, 3),
   (17, 3),
-  (18, 3),
-  (20, 3),
-  (21, 3);
+  (19, 3),
+  (20, 3);
+  
+  SELECT * FROM oncogenes.treatments;
+
+INSERT INTO treatments (Name, Note) VALUES 
+('Chirurginis', NULL),
+('Spindulinė terapija', NULL),
+('Chemoterapija', NULL),
+('Hormonoterapija', 'išplitusio krūties vėžio atveju'),
+('Biologinė terapija', 'išplitusio krūties vėžio atveju');
+
+  
+INSERT INTO oncogenes.diseasetreatments (DiseaseId, TreatmentId)
+VALUES (1, 1),
+       (2, 1),
+       (3, 1),
+       (4, 1),
+       (5, 1);
 

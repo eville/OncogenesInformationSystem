@@ -11,11 +11,11 @@ namespace Oncogenes.Domain
 
         public string Code { get; set; }
 
-        public string CodeDescription { get; set; }
+        public int CodeType { get; set; } = 0;
+
+        public string? CodeDescription { get; set; }
         
         public int CodeLevel { get; set; }
-
-        public string? OrphaCode { get; set; }
 
         public Disease Disease { get; set; }
 

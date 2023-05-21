@@ -10,6 +10,8 @@ namespace Oncogenes.Domain
         [Required]
         public string Name { get; set; }
 
+        public string? Note { get; set; }
+
         public List<Disease> Diseases { get; set; } = new ();
     }
 }

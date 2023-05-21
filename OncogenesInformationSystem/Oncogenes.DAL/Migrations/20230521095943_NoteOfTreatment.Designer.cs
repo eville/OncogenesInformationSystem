@@ -11,15 +11,15 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    [Migration("20230519205102_removalofredundanttreatment")]
-    partial class removalofredundanttreatment
+    [Migration("20230521095943_NoteOfTreatment")]
+    partial class NoteOfTreatment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("DiseaseMedicalTests", b =>
@@ -171,17 +171,16 @@ namespace Oncogenes.DAL.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("CodeDescription")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("CodeLevel")
                         .HasColumnType("int");
 
-                    b.Property<int>("DiseaseId")
+                    b.Property<int>("CodeType")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrphaCode")
-                        .HasColumnType("longtext");
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
 
                     b.HasKey("DiseaseCodeId");
 
@@ -258,9 +257,12 @@ namespace Oncogenes.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("longtext");
+
                     b.HasKey("TreatmentId");
 
-                    b.ToTable("Treatment");
+                    b.ToTable("Treatments");
                 });
 
             modelBuilder.Entity("OncogenesDiseases", b =>

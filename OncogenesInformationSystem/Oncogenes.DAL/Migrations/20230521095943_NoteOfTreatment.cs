@@ -5,14 +5,14 @@
 namespace Oncogenes.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class NotestoMedicalTest : Migration
+    public partial class NoteOfTreatment : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "Note",
-                table: "MedicalTests",
+                table: "Treatments",
                 type: "longtext",
                 nullable: true);
         }
@@ -22,7 +22,7 @@ namespace Oncogenes.DAL.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Note",
-                table: "MedicalTests");
+                table: "Treatments");
         }
     }
 }

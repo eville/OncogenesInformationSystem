@@ -16,17 +16,34 @@ else
            </div>
            <div class="card-body">
                <div>
-                    @if (disease.DiseaseCodes.Any())
+                    @if (disease.DiseaseCodes.Where(x => x.CodeType == 0).Any())
                     {
                         <h5>TLK</h5>
-                        @foreach (var diseaseCode in disease.DiseaseCodes)
+                        var tlkCodes = disease.DiseaseCodes.Where(x => x.CodeType == 0).OrderBy(d => d.CodeLevel).ThenBy(d => d.Code);
+                        var firstLevelCodTLK = tlkCodes.FirstOrDefault(x => x.CodeLevel == 1);
+                        var secondLevelCodTLK = tlkCodes.Where(x => x.CodeLevel == 2);
+                        if(firstLevelCodTLK != null)
                         {
-                            disease.DiseaseCodes.OrderBy(d => d.CodeLevel).ThenBy(d => d.Code);
-                            if (diseaseCode.CodeLevel == 1)
-                            {
-                                
-                            }
+                            <p>@firstLevelCodTLK.Code @firstLevelCodTLK.CodeDescription</p>
+                        }
+                        @foreach (var diseaseCode in secondLevelCodTLK)
+                        {
                             <p>@diseaseCode.Code @diseaseCode.CodeDescription</p>
+                            
+                        }
+                    }
+                    
+
+                    @if (disease.DiseaseCodes.Where(x => x.CodeType > 0).Any())
+                    {
+                        var otherDiseaseCodes = disease.DiseaseCodes.Where(x => x.CodeType > 0).OrderBy(d => d.Code);
+
+                        <p>Kodai pagal ORPHA ar kitas sistemas:</p>
+
+                        @foreach (var otherDiseaseCode in otherDiseaseCodes)
+                        {
+                            <p>@otherDiseaseCode.Code @otherDiseaseCode.CodeDescription?</p>
+
                         }
                     }
                 </div>
@@ -58,7 +75,7 @@ else
                                         <li>@medicalTest.Name</li>
                                             if (!String.IsNullOrEmpty(medicalTest.Note))
                                         {
-                                                <small style="margin-bottom: 2px;">*@medicalTest.Note</small>
+                                                <small>*@medicalTest.Note</small>
                                         }
                                        
                                  }
@@ -76,59 +93,7 @@ else
                      </tbody>
                     </table>
                 </div>
-               @*<p>@disease.Description</p>
-               <p>@disease.Symptoms</p>
-               <p>@disease.Treatment</p>*@
            </div>
        </div>
    }
-   @* <table class="table table-light">
-        <thead class="table-primary">
-            <tr>
-                <th>Simbolis</th>
-                <th>Pavadinimas</th>
-                <th>Navikų tipai</th>
-                <th>Vėžio sindromas</th>
-                <th>Liga</th>
-                <th>Vaistai</th>
-                <th>Atsparumas vaistams</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var gene in Oncogenes)
-            {
-                <tr>
-                    <td>@gene.Symbol</td>
-                    <td>@gene.Name</td>
-                    <td>@gene.TumorTypes</td>
-                    <td>@gene.CancerSyndrome</td>
-                    <td>
-                        @foreach (var disease in gene.Diseases)
-                        {
-                            <p>@disease.Name</p>
-                        }
-                    </td>
-                    <td>
-                        @foreach (var activation in gene.Activations)
-                        {
-                            <div>
-                                @foreach (var drug in activation.Drugs)
-                                {
-                                    <p>@drug.GenericDrugName</p>
-                                }
-                            </div>
-
-                        }
-                    </td>
-                    <td>
-                        @foreach (var drug in gene.Drugs)
-                        {
-                            <p>@drug.GenericDrugName</p>
-                        }
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>*@
 }

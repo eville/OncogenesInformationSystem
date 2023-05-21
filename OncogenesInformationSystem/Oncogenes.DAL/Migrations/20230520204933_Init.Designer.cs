@@ -11,8 +11,8 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    [Migration("20230517070154_NotestoMedicalTest")]
-    partial class NotestoMedicalTest
+    [Migration("20230520204933_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,21 @@ namespace Oncogenes.DAL.Migrations
                     b.HasIndex("MedicalTestId");
 
                     b.ToTable("DiseaseMedicalTests");
+                });
+
+            modelBuilder.Entity("DiseaseTreatments", b =>
+                {
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TreatmentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DiseaseId", "TreatmentId");
+
+                    b.HasIndex("TreatmentId");
+
+                    b.ToTable("DiseaseTreatments");
                 });
 
             modelBuilder.Entity("DrugActivation", b =>
@@ -95,8 +110,8 @@ namespace Oncogenes.DAL.Migrations
                     b.Property<string>("Info")
                         .HasColumnType("longtext");
 
-                    b.Property<DateOnly?>("LastUpdated")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("MutationRemark")
                         .IsRequired()
@@ -115,8 +130,8 @@ namespace Oncogenes.DAL.Migrations
                     b.Property<int?>("TreatedNumber")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("TrialPrimaryCompletionDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("TrialPrimaryCompletionDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("TrialStatus")
                         .HasColumnType("int");
@@ -156,17 +171,16 @@ namespace Oncogenes.DAL.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("CodeDescription")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("CodeLevel")
                         .HasColumnType("int");
 
-                    b.Property<int>("DiseaseId")
+                    b.Property<int>("CodeType")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrphaCode")
-                        .HasColumnType("longtext");
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
 
                     b.HasKey("DiseaseCodeId");
 
@@ -197,14 +211,9 @@ namespace Oncogenes.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CancerSyndrome")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RoleInCancer")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -213,7 +222,6 @@ namespace Oncogenes.DAL.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("TumorTypes")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -237,6 +245,21 @@ namespace Oncogenes.DAL.Migrations
                     b.HasKey("MedicalTestId");
 
                     b.ToTable("MedicalTests");
+                });
+
+            modelBuilder.Entity("Oncogenes.Domain.Treatment", b =>
+                {
+                    b.Property<int>("TreatmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("TreatmentId");
+
+                    b.ToTable("Treatments");
                 });
 
             modelBuilder.Entity("OncogenesDiseases", b =>
@@ -265,6 +288,21 @@ namespace Oncogenes.DAL.Migrations
                     b.HasOne("Oncogenes.Domain.MedicalTest", null)
                         .WithMany()
                         .HasForeignKey("MedicalTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiseaseTreatments", b =>
+                {
+                    b.HasOne("Oncogenes.Domain.Disease", null)
+                        .WithMany()
+                        .HasForeignKey("DiseaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oncogenes.Domain.Treatment", null)
+                        .WithMany()
+                        .HasForeignKey("TreatmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

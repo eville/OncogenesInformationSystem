@@ -21,6 +21,8 @@ namespace Oncogenes.DAL
 
         public DbSet<MedicalTest> MedicalTests { get; set; }
 
+        public DbSet<Treatment> Treatments { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
