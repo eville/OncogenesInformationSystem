@@ -1,0 +1,57 @@
+﻿@page "/diseaseseditor"
+
+<h2>Ligos</h2>
+
+@if (Diseases == null)
+{
+    <p><em>Informacija ruošiama...</em></p>
+}
+else
+{
+    <div class="row mb-3">
+        @if (ShowForm)
+        {
+            <form @onsubmit="AddDiseaseAsync">
+                <div class="form-group mb-3">
+                    <label for="title">Pavadinimas:</label>
+                    <input type="text" id="title" class="form-control" @bind="Disease.Name" />
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Išsaugoti ligą</button>
+
+                </div>
+            </form>
+        }
+        else
+        {
+            <button class="btn btn-primary col-sm-1" @onclick="ToggleForm">Pridėti ligą</button>
+        }
+    </div>
+    <div class="row mb-3">
+        <table class="table table-light">
+            <thead class="table-primary">
+                <tr>
+                    <th>Pavadinimas</th>
+                    <th>Veiksmai</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var disease in Diseases)
+                {
+                    <tr>
+                        <td>@disease.Name</td>
+                        <td>
+                            <a href="@($"diseasenameandcodeedit/{disease.Id}")" class="btn btn-primary">Redaguoti pavadinimą ir kodus</a>
+                            <a href="@($"diseaseedition/{disease.Id}")" class="btn btn-primary">Redaguoti tyrimus</a>
+                            <a href="@($"diseaseedition/{disease.Id}")" class="btn btn-primary">Redaguoti gydymo būdus</a>
+                            <button class="btn btn-danger" @onclick="() => DeleteDiseaseAsync(disease.Id)">Ištrinti</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+}
+
+

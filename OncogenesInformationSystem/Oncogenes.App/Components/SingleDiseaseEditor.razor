@@ -1,6 +1,5 @@
-﻿@page "/diseaseedition"
-@page "/diseaseedition/{DiseaseId}"
-
+﻿@page "/singlediseaseeditor"
+@page "/singlediseaseeditor/{EmployeeId}"
 @if (Disease == null)
 {
     <p><em>Kraunasi...</em></p>
@@ -19,19 +18,19 @@ else
         </div>
         <h4>Ligos diagnostiniai tyrimai</h4>
         @*<div class="container">*@
-            @foreach (var diseaseMedicalTest in Disease.MedicalTests)
-            {
-                <div class="mb-3">
-                        <label for="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")">Tryimo pavadinimas:</label>
+        @foreach (var diseaseMedicalTest in Disease.MedicalTests)
+        {
+            <div class="mb-3">
+                <label for="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")">Tryimo pavadinimas:</label>
                 <InputText id="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")" class="form-control col-md-4" @bind-Value="diseaseMedicalTest.Name" />
 
-                        <label for="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")">Pastaba:</label>
-                        <InputTextArea id="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")" class="form-control col-md-8" @bind-Value="diseaseMedicalTest.Note" />                
-                </div>
-                @*<ValidationMessage For="@(() => course.Name)" />*@
-            }
+                <label for="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")">Pastaba:</label>
+                <InputTextArea id="@($"Tyrimas{diseaseMedicalTest.MedicalTestId}")" class="form-control col-md-8" @bind-Value="diseaseMedicalTest.Note" />
+            </div>
+            @*<ValidationMessage For="@(() => course.Name)" />*@
+        }
         @*</div>*@
-        
+
 
     </section>
 }

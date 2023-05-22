@@ -39,20 +39,51 @@ namespace Oncogenes.Api.Controllers
 
         // POST api/<DiseaseController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<Disease>> AddDisease(Disease disease)
         {
+            if (ModelState.IsValid)
+            {
+                var addedDisease = await diseasesRepository.AddDiseaseAsync(disease);
+                return CreatedAtAction(nameof(AddDisease), new { id = addedDisease.Id }, addedDisease);
+            }
+            return BadRequest(ModelState);
         }
 
         // PUT api/<DiseaseController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult<Disease>> Put(int id, Disease disease)
         {
+            if (id != disease.Id)
+            {
+                return BadRequest("Invalid disease ID");
+            }
+
+            var existingDisease = await diseasesRepository.GetDiseaseById(id);
+            if (existingDisease == null)
+            {
+                return NotFound();
+            }
+
+            existingDisease.Name = disease.Name;
+
+
+            var updatedDisease = await diseasesRepository.UpdateDiseaseAsync(existingDisease);
+            return Ok(updatedDisease);
         }
 
         // DELETE api/<DiseaseController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<Disease>> DeleteStudent(int id)
         {
+            var disease = await diseasesRepository.GetDiseaseById(id);
+            if (disease == null)
+            {
+                return NotFound();
+            }
+
+            await diseasesRepository.DeleteAsync(disease);
+
+            return NoContent();
         }
     }
 }

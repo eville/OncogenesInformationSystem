@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oncogenes.Domain;
+using System.Globalization;
 
 namespace Oncogenes.DAL.Repository
 {
@@ -24,9 +25,47 @@ namespace Oncogenes.DAL.Repository
         public async Task<Disease?> GetDiseaseById(int id)
         {
             return await appDbContext.Diseases
+                .Include(d => d.DiseaseCodes)
                 .Include(d => d.MedicalTests)
                 .Include(d => d.Treatments)
                 .FirstOrDefaultAsync(d => d.Id == id);
+        }
+
+        public async Task<Disease> AddDiseaseAsync(Disease disease)
+        {
+            var compareInfo = CultureInfo.InvariantCulture.CompareInfo;
+
+            var existingDisease = appDbContext.Diseases
+            .AsEnumerable().FirstOrDefault(d => compareInfo.Compare(d.Name, disease.Name, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0);
+            
+            if (existingDisease != null)
+            {
+                throw new Exception("Tokiu pavadinimu liga jau yra sistemoje.");
+            }
+            else
+            {
+                await appDbContext.Diseases.AddAsync(disease);
+                await appDbContext.SaveChangesAsync();
+                return disease;
+            }     
+        }
+
+        public async Task DeleteAsync(Disease disease)
+        {
+            if (disease == null)
+            {
+                throw new ArgumentNullException(nameof(disease));
+            }
+
+            appDbContext.Diseases.Remove(disease);
+            await appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<Disease> UpdateDiseaseAsync(Disease disease)
+        {
+            appDbContext.Entry(disease).State = EntityState.Modified;
+            await appDbContext.SaveChangesAsync();
+            return disease;
         }
     }
 }

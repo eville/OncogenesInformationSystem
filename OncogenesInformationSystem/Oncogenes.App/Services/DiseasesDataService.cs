@@ -1,6 +1,7 @@
 ﻿using Oncogenes.Domain;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text;
 
 namespace Oncogenes.App.Services
 {
@@ -46,6 +47,57 @@ namespace Oncogenes.App.Services
             }
         }
 
+        public async Task<Disease> AddDisease(Disease disease)
+        {
+            try
+            {
+                var diseaseJson =
+                new StringContent(JsonSerializer.Serialize(disease), Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync("api/Diseases", diseaseJson);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await JsonSerializer.DeserializeAsync<Disease>(await response.Content.ReadAsStreamAsync());
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception exception)
+            {
+                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(AddDisease), $"api/Diseases", exception);
+                return new Disease();
+            }
+        }
+
+        public async Task UpdateDisease(Disease disease)
+        {
+            try
+            {
+                var diseaseJson =
+                new StringContent(JsonSerializer.Serialize(disease), Encoding.UTF8, "application/json");
+
+                await httpClient.PutAsync("api/Diseases", diseaseJson);
+            }
+            catch (Exception exception)
+            {
+                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(UpdateDisease), $"api/Diseases/{disease.Id}", exception);
+            }
+        }
+
+        public async Task DeleteDisease(int id)
+        {
+            try
+            {
+                await httpClient.DeleteAsync($"api/Diseases/{id}");
+            }
+            catch (Exception exception)
+            {
+                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(DeleteDisease), $"api/Diseases/{id}", exception);
+            }
+        }
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oncogenes.Domain;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Oncogenes.DAL
 {
@@ -85,6 +84,11 @@ namespace Oncogenes.DAL
                    j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
                    j => j.HasOne<Treatment>().WithMany().HasForeignKey("TreatmentId")
                );
+
+            modelBuilder.Entity<DiseaseCode>()
+            .HasIndex(e => e.Code)
+            .IsUnique();
+
 
         }
     }
