@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oncogenes.Domain;
+using System;
 using System.Globalization;
+using System.Linq;
 
 namespace Oncogenes.DAL.Repository
 {
@@ -61,9 +63,11 @@ namespace Oncogenes.DAL.Repository
             await appDbContext.SaveChangesAsync();
         }
 
+
         public async Task<Disease> UpdateDiseaseAsync(Disease disease)
         {
-            appDbContext.Entry(disease).State = EntityState.Modified;
+
+            appDbContext.Diseases.Update(disease);
             await appDbContext.SaveChangesAsync();
             return disease;
         }

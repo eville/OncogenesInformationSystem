@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Oncogenes.App.Services;
 using Oncogenes.Domain;
-using Oncogenes.Domain.Enums;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -11,24 +10,33 @@ namespace Oncogenes.App.Pages
     {
         public List<DiseaseCode>? DiseaseCodes { get; set; } = default;
 
-        public List<string> DiseaseCodeTypes { get; set; }
+        public DiseaseCode DiseaseCode { get; set; } 
+        public List<string> DiseaseCodeTypesValues { get; set; }
+
+        private bool ShowForm { get; set; } = false;
 
         [Inject]
         public IDiseaseCodeDataService? DiseaseCodeDataService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-
+            DiseaseCode = new DiseaseCode();
             DiseaseCodes = (await DiseaseCodeDataService.GetDiseaseCodes()).ToList();
         }
 
 
-        private void HandleValidSubmit()
+        public async Task HandleValidSubmitAsync(DiseaseCode diseaseCode)
         {
-            // Here you handle the form submission.
-            // For example, you might want to save the model to a database or call an API.
-            Console.WriteLine($"Submitted: {diseaseCode.CodeLevel}");
+            await DiseaseCodeDataService.UpdateDiseaseCode(diseaseCode);
+            //DiseaseCodes = (await DiseaseCodeDataService.GetDiseaseCodes()).ToList();
         }
+
+        public async Task DeleteDiseaseCodeAsync(int id)
+        {
+            await DiseaseCodeDataService.DeleteDiseaseCode(id);
+            DiseaseCodes = (await DiseaseCodeDataService.GetDiseaseCodes()).ToList();
+        }
+
 
         public string GetDescription<TEnum>(TEnum enumValue)
         where TEnum : struct, IConvertible // Ensure it is an enum
@@ -44,5 +52,31 @@ namespace Oncogenes.App.Pages
                             ?.Description
                    ?? enumValue.ToString(); // Return the name as a fallback
         }
+
+        private async Task AddDiseaseCodeAsync()
+        {
+
+            var diseaseCode = await DiseaseCodeDataService.AddDiseaseCode(DiseaseCode);
+            if (diseaseCode != null)
+            {
+                DiseaseCodes = (await DiseaseCodeDataService.GetDiseaseCodes()).ToList();
+            }
+            DiseaseCode = new DiseaseCode();
+
+            ShowForm = false;
+        }
+
+        private void ToggleForm()
+        {
+            ShowForm = !ShowForm;
+        }
+
+        //private void UpdateVisibility(ChangeEventArgs e)
+        //{
+        //    if (Enum.TryParse(typeof(DiseaseCodeTypes), e.Value.ToString(), out var selectedValue))
+        //    {
+        //        ShowLevel = (DiseaseCodeTypes)selectedValue != DiseaseCodeTypes.ORPHA;
+        //    }
+        //}
     }
 }

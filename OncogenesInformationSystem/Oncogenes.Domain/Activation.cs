@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Oncogenes.Domain
 {
@@ -35,7 +36,10 @@ namespace Oncogenes.Domain
 
         public DateTime? LastUpdated { get; set; }
 
+        [JsonIgnore]
         public Gene Oncogene { get; set; }
+
+        [JsonIgnore]
         public List<Drug> Drugs { get; set; } = new();
     }
 }

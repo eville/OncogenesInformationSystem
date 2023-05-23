@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Text;
+using System.Net.Http;
 
 namespace Oncogenes.App.Services
 {
@@ -52,7 +53,7 @@ namespace Oncogenes.App.Services
             try
             {
                 var diseaseJson =
-                new StringContent(JsonSerializer.Serialize(disease), Encoding.UTF8, "application/json");
+                new StringContent(JsonSerializer.Serialize(disease, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve }), Encoding.UTF8, "application/json");
 
                 var response = await httpClient.PostAsync("api/Diseases", diseaseJson);
 
@@ -77,9 +78,17 @@ namespace Oncogenes.App.Services
             try
             {
                 var diseaseJson =
+                new StringContent(JsonSerializer.Serialize(disease, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve }), Encoding.UTF8, "application/json");
+
+                //var x = await httpClient.PutAsync($"api/DiseaseCode/{diseaseCode.DiseaseCodeId}", diseaseCodeJson);
+
+                var diseaseInJson =
                 new StringContent(JsonSerializer.Serialize(disease), Encoding.UTF8, "application/json");
 
-                await httpClient.PutAsync("api/Diseases", diseaseJson);
+                //await _httpClient.PutAsync("api/employee", employeeJson);
+
+
+                await httpClient.PutAsync($"api/Diseases", diseaseInJson);
             }
             catch (Exception exception)
             {

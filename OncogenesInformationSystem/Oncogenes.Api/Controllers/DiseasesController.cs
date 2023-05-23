@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Oncogenes.DAL.Repository;
 using Oncogenes.Domain;
 
@@ -50,25 +51,26 @@ namespace Oncogenes.Api.Controllers
         }
 
         // PUT api/<DiseaseController>/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Disease>> Put(int id, Disease disease)
+        //[HttpPut("{id}")]
+        //public async Task<ActionResult<Disease>> Put(int id, Disease disease
+        [HttpPut]
+        public async Task<IActionResult> UpdateDiseaseAsync([FromBody] Disease disease)
         {
-            if (id != disease.Id)
-            {
-                return BadRequest("Invalid disease ID");
-            }
 
-            var existingDisease = await diseasesRepository.GetDiseaseById(id);
-            if (existingDisease == null)
-            {
-                return NotFound();
-            }
+            //var existingDisease = await diseasesRepository.GetDiseaseById(disease.Id);
+            //if (existingDisease == null)
+            //{
+            //    return NotFound();
+            //}
 
-            existingDisease.Name = disease.Name;
+           
+            //existingDisease.DiseaseCodes = disease.DiseaseCodes;
+            //existingDisease.Oncogenes = disease.Oncogenes;
+            //existingDisease.Treatments = disease.Treatments;
+            //existingDisease.MedicalTests = disease.MedicalTests;
 
-
-            var updatedDisease = await diseasesRepository.UpdateDiseaseAsync(existingDisease);
-            return Ok(updatedDisease);
+            await diseasesRepository.UpdateDiseaseAsync(disease);
+            return Ok(disease);
         }
 
         // DELETE api/<DiseaseController>/5

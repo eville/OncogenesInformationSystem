@@ -22,6 +22,12 @@ builder.Services.AddScoped<IOncogenesRepository, OncogenesRepository>();
 builder.Services.AddScoped<IDiseasesRepository, DiseasesRepository>();
 builder.Services.AddScoped<IDiseaseCodesRepository, DiseaseCodesRepository>();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 

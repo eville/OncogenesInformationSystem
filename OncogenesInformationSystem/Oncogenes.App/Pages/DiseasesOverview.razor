@@ -19,14 +19,8 @@ else
                     @if (disease.DiseaseCodes.Where(x => x.CodeType == 0).Any())
                     {
                         <h5>TLK</h5>
-                        var tlkCodes = disease.DiseaseCodes.Where(x => x.CodeType == 0).OrderBy(d => d.CodeLevel).ThenBy(d => d.Code);
-                        var firstLevelCodTLK = tlkCodes.FirstOrDefault(x => x.CodeLevel == 1);
-                        var secondLevelCodTLK = tlkCodes.Where(x => x.CodeLevel == 2);
-                        if(firstLevelCodTLK != null)
-                        {
-                            <p>@firstLevelCodTLK.Code @firstLevelCodTLK.CodeDescription</p>
-                        }
-                        @foreach (var diseaseCode in secondLevelCodTLK)
+                        var tlkCodes = disease.DiseaseCodes.Where(x => x.CodeType == 0).OrderBy(d => d.Code);
+                        @foreach (var diseaseCode in tlkCodes)
                         {
                             <p>@diseaseCode.Code @diseaseCode.CodeDescription</p>
                             

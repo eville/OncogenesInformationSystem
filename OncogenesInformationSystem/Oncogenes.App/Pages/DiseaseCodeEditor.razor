@@ -3,6 +3,45 @@
 
 <h2>Ligų kodai</h2>
 
+
+<div class="col">
+    @if (ShowForm)
+    {
+        <div class="mb-3">
+        <form @onsubmit="AddDiseaseCodeAsync">
+            <div class="card">
+            <span class="card-body">
+                <label for="title">Kodas:</label>
+                <input type="text" id="title" class="form-control" @bind="@DiseaseCode.Code" />
+                <label for="title">Diagnozė:</label>
+                <input type="text" id="title" class="form-control" @bind="@DiseaseCode.CodeDescription" />
+                        <div class="form-group">
+                                <label for="TypeDropdown">Pasirinkite tipą:</label>
+                                <InputSelect id="TypeDropdown" class="form-control" @bind-Value="@DiseaseCode.CodeType">
+                                    >
+                                    @foreach (DiseaseCodeTypes level in Enum.GetValues(typeof(DiseaseCodeTypes)))
+                                    {
+                                        <option value="@((int)level)">@GetDescription(level)</option>
+                                    }
+                                </InputSelect>
+                        </div>
+                         
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Išsaugoti naują kodą</button>
+                </div>              
+                </span>
+            </div>
+        </form>
+        </div>
+    }
+    else
+    {
+        <div class="mb-3 mt-3 col-1">
+            <button class="btn btn-primary" @onclick="ToggleForm" >Pridėti kodą</button>
+        </div>
+    }
+</div>
+
 @if (DiseaseCodes == null)
 {
     <p><em>Kraunasi...</em></p>
@@ -11,13 +50,13 @@ else
 {
    @foreach (var diseaseCode in DiseaseCodes)
     {
-        <EditForm Model="@diseaseCode" OnValidSubmit="@HandleValidSubmit">
+        <EditForm Model="@diseaseCode">
             <div class="card">
             <span class="card-body">
 
                 <div class="form-group">
                     <label for="LevelDropdown">Pasirinkite tipą:</label>
-                    <InputSelect id="LevelDropdown" class="form-control" @bind-Value="@diseaseCode.CodeType">
+                        <InputSelect id="LevelDropdown" class="form-control" @bind-Value="@diseaseCode.CodeType">
                         @foreach (DiseaseCodeTypes level in Enum.GetValues(typeof(DiseaseCodeTypes)))
                         {
                             <option value="@((int)level)">@GetDescription(level)</option>
@@ -31,25 +70,15 @@ else
 
                     <label for="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")">Diagnozė:</label>
                     <InputText id="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")" class="form-control col-md-4" @bind-Value="diseaseCode.CodeDescription" />
-
-                @if (diseaseCode != null)
-                {
-                    <div class="form-group">
-                        <label for="LevelDropdown">Pasirinkite lygį:</label>
-                        <InputSelect id="LevelDropdown" class="form-control" @bind-Value="@diseaseCode.CodeLevel">
-                            @foreach (var level in Enum.GetValues(typeof(TLKCodeLevel)))
-                            {
-                                <option value="@((int)level)">@level</option>
-
-                            }
-                        </InputSelect>
-                    </div>
-                }
-                   
-            </span>
+                </span>
+                <div class="card-footer">
+                    <button @onclick="@(() => HandleValidSubmitAsync(diseaseCode))" class="btn btn-primary">Išsaugoti</button>
+                    <button @onclick="@(() => DeleteDiseaseCodeAsync(diseaseCode.DiseaseCodeId))" class="btn btn-danger">Ištrinti</button>
+               </div>
                
            </div>
-        @*  </div>*@
         </EditForm>
+
+        @*OnValidSubmit="@(() => HandleValidSubmitAsync(diseaseCode))*@
     }
 }

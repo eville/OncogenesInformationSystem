@@ -18,7 +18,7 @@ namespace Oncogenes.Api.Controllers
 
         // GET: api/<DiseaseCodeController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DiseaseCode>>> GetDiseases()
+        public async Task<ActionResult<IEnumerable<DiseaseCode>>> GetDiseaseCodes()
         {
             var diseases = await diseaseCodeRepository.GetAllCodes();
             return Ok(diseases);
@@ -41,12 +41,12 @@ namespace Oncogenes.Api.Controllers
 
         // POST api/<DiseaseCodeController>
         [HttpPost]
-        public async Task<ActionResult<DiseaseCode>> AddDisease(DiseaseCode disease)
+        public async Task<ActionResult<DiseaseCode>> AddDiseaseCode(DiseaseCode disease)
         {
             if (ModelState.IsValid)
             {
                 var addedDiseaseCode = await diseaseCodeRepository.AddDiseaseCodeAsync(disease);
-                return CreatedAtAction(nameof(AddDisease), new { id = addedDiseaseCode.DiseaseCodeId }, addedDiseaseCode);
+                return CreatedAtAction(nameof(AddDiseaseCode), new { id = addedDiseaseCode.DiseaseCodeId }, addedDiseaseCode);
             }
             return BadRequest(ModelState);
         }
@@ -55,19 +55,15 @@ namespace Oncogenes.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<DiseaseCode>> Put(int id, DiseaseCode diseaseCode)
         {
-            if (id != diseaseCode.DiseaseCodeId)
-            {
-                return BadRequest("Invalid disease ID");
-            }
-
-            var existingDiseaseCode = await diseaseCodeRepository.GetDiseaseCodeById(id);
+            var existingDiseaseCode = await diseaseCodeRepository.GetDiseaseCodeById(diseaseCode.DiseaseCodeId);
             if (existingDiseaseCode == null)
             {
                 return NotFound();
             }
 
-            //todo check if this is the right way to update
             existingDiseaseCode.Code = diseaseCode.Code;
+            existingDiseaseCode.CodeDescription = diseaseCode.CodeDescription;
+            existingDiseaseCode.CodeType = diseaseCode.CodeType;
 
 
             var updatedDisease = await diseaseCodeRepository.UpdateDiseaseCodeAsync(existingDiseaseCode);

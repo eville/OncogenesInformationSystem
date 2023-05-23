@@ -1,32 +1,115 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Oncogenes.App.Services;
 using Oncogenes.Domain;
+using System.ComponentModel;
 
 namespace Oncogenes.App.Pages
 {
     public partial class DiseaseNameAndCodeEdit
     {
         [Inject]
+        public ILogger<DiseaseNameAndCodeEdit>? Logger { get; set; }
+        [Inject]
         public IDiseasesDataService? DiseasesDataService { get; set; }
+
+        [Inject]
+        public IDiseaseCodeDataService? DiseaseCodesDataService { get; set; }
 
         [Parameter]
         public string? DiseaseId { get; set; }
 
+        private bool ShowForm { get; set; } = false;
+
+        private List<DiseaseCode> filteredCodes { get; set; }
+
+        private string[] options;
+
+        private string SelectedOption { get; set; } = string.Empty;
+        
 
         public Disease Disease { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-
-            if (int.TryParse(DiseaseId, out int id))
+            try
             {
-                Disease = await DiseasesDataService?.GetDiseaseById(id);
+                if (int.TryParse(DiseaseId, out int id))
+                {
+                    Disease = await DiseasesDataService?.GetDiseaseById(id);
+                }
+                else
+                {
+                    Disease = new Disease();
+                }
+
+                IEnumerable<DiseaseCode> diseaseCodes = await DiseaseCodesDataService?.GetDiseaseCodes();
+
+                filteredCodes = diseaseCodes?.Where(dc1 => !Disease.DiseaseCodes.Any(alreadyIn => alreadyIn.DiseaseCodeId == dc1.DiseaseCodeId)).ToList();
+
+                options = filteredCodes?.Select(d => $"{d.Code} {d.CodeDescription}").ToArray();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Exception occured while manipulating disease codes in {nameof(DiseaseNameAndCodeEdit)}", ex.Message);
+            }
+            
+        }
+
+        public async Task DeleteDiseaseCodeAsync(int diseaseId, int diseaseCodeId)
+        {
+            var disease = await DiseasesDataService?.GetDiseaseById(diseaseId);
+           
+            var diseaseCodeToRemove = disease.DiseaseCodes.FirstOrDefault(c => c.DiseaseCodeId == diseaseCodeId);
+
+            if (diseaseCodeToRemove != null)
+            {
+                disease.DiseaseCodes.Remove(diseaseCodeToRemove);
+            }
+            
+           await DiseasesDataService?.UpdateDisease(disease);
+        }
+
+        public static string GetDescription(Enum value)
+        {
+            var fieldInfo = value.GetType().GetField(value.ToString());
+            var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            if (attributes != null && attributes.Length > 0)
+            {
+                return attributes[0].Description;
             }
             else
             {
-                Disease = new Disease();
+                return value.ToString();
             }
+        }
 
+        private void ToggleForm()
+        {
+            ShowForm = !ShowForm;
+        }
+
+        private class FormData
+        {
+            public string SelectedOption { get; set; }
+        }
+
+        private async Task HandleValidSubmit()
+        {
+           if(!string.IsNullOrEmpty(SelectedOption))
+            {
+                var code = SelectedOption.Split(" ")[0];
+                string[] words = code.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries);
+
+                var diseaseCode = filteredCodes.FirstOrDefault(dc => dc.Code.Contains(words[0]));
+
+                if (diseaseCode != null) 
+                {
+                    Disease.DiseaseCodes.Add(diseaseCode);
+                    await DiseasesDataService?.UpdateDisease(Disease);
+                }
+            }
         }
     }
 }

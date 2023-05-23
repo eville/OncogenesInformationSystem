@@ -11,8 +11,8 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    [Migration("20230522152433_OptionalDiseaseCodeLevel")]
-    partial class OptionalDiseaseCodeLevel
+    [Migration("20230523080448_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,13 +173,10 @@ namespace Oncogenes.DAL.Migrations
                     b.Property<string>("CodeDescription")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("CodeLevel")
-                        .HasColumnType("int");
-
                     b.Property<int>("CodeType")
                         .HasColumnType("int");
 
-                    b.Property<int>("DiseaseId")
+                    b.Property<int?>("DiseaseId")
                         .HasColumnType("int");
 
                     b.HasKey("DiseaseCodeId");
@@ -362,9 +359,7 @@ namespace Oncogenes.DAL.Migrations
                 {
                     b.HasOne("Oncogenes.Domain.Disease", "Disease")
                         .WithMany("DiseaseCodes")
-                        .HasForeignKey("DiseaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DiseaseId");
 
                     b.Navigation("Disease");
                 });

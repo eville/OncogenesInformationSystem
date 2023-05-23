@@ -1,8 +1,22 @@
-Stempl?s endoskopinis tyrimas su biopsija,
-Kr?tin?s l?stos KT su kontrastu,
-Pilvo srities KT su kontrastu,
-PET/KT,jeigu n?ra duomen? apie tolimas metastazes
-Bendras kraujo tyrimas,
-Biocheminiai kepen? tyrimai,
-HER2,neu nustatymas adenokarcimos atveju
-Brochoskopija,"jei navikas auks?iau biforkacijos lygio, n?ra atki? metastazi?"
+"Objektyvus b?kl?s ?vertinimas, palpacijos aprašymas",privalomi tyrimai
+Mamografija,privalomi tyrimai
+Kr?t? echoskopija,privalomi tyrimai
+Kr?tin?s l?stos rentgenograma,privalomi tyrimai
+Pilvo organ? echoskopija,privalomi tyrimai
+Kr?t? MRT,privalomi tyrimai
+"Pathistologinis tyrimas, imunohistochemija",privalomi tyrimai
+"Konsiliumas, susidedantis iš daugiadalyk?s komandos gydymo planui aptarti",privalomi tyrimai
+"Pathistologinis tyrimas, imunohistochemija","privalomi tyrimai, išplitusio kr?ties v?žio atveju"
+Kr?t? naviko ir l/m punkcija,"privalomi tyrimai, išplitusio kr?ties v?žio atveju"
+"Pathistologinis tyrimas, imunohistochemija","atliekami ne visiems, o tik pagal klinikin? situacij? atrinktiems pacientams, tyrimas n?ra privalomas"
+Kr?tin?s l?stos KT,"atliekami ne visiems, o tik pagal klinikin? situacij? atrinktiems pacientams, tyrimas n?ra privalomas"
+Sritini? l/m echoskopija,"atliekami ne visiems, o tik pagal klinikin? situacij? atrinktiems pacientams, tyrimas n?ra privalomas"
+Plau?i? rentgenologinis tyrimas,"atliekami ne visiems, o tik pagal klinikin? situacij? atrinktiems pacientams, tyrimas n?ra privalomas"
+Kaul? skenavimas,"atliekami ne visiems, o tik pagal klinikin? situacij? atrinktiems pacientams, tyrimas n?ra privalomas"
+PET-CT,"atliekami ne visiems, o tik pagal klinikin? situacij? atrinktiems pacientams, tyrimas n?ra privalomas"
+,
+Chirurginis,
+Spindulinis,
+Chemoterapinis,
+Hormonoterapija,išplitusio kr?ties v?žio atveju
+Biologin? terapija,išplitusio kr?ties v?žio atveju

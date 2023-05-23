@@ -15,7 +15,7 @@ namespace Oncogenes.DAL.Repositories
 
         public async Task<IEnumerable<DiseaseCode>> GetAllCodes()
         {
-            return await appDbContext.DiseaseCodes.ToListAsync();
+            return await appDbContext.DiseaseCodes.Include(c=>c.Diseases).ToListAsync();
         }
 
         public async Task<DiseaseCode?> GetDiseaseCodeById(int id)

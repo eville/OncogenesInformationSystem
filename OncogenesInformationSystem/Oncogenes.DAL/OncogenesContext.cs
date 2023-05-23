@@ -63,8 +63,8 @@ namespace Oncogenes.DAL
 
             modelBuilder.Entity<Disease>()
             .HasMany(d => d.DiseaseCodes)
-            .WithOne(dc => dc.Disease)
-            .HasForeignKey(dc => dc.DiseaseId);
+            .WithMany(dc => dc.Diseases)
+            .UsingEntity(j => j.ToTable("DiseasesToCodes"));
 
 
             modelBuilder.Entity<MedicalTest>()

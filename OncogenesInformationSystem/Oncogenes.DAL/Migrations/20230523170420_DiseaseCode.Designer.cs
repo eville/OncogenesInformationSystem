@@ -11,8 +11,8 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    [Migration("20230520204933_Init")]
-    partial class Init
+    [Migration("20230523170420_DiseaseCode")]
+    partial class DiseaseCode
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,21 @@ namespace Oncogenes.DAL.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("DiseaseDiseaseCode", b =>
+                {
+                    b.Property<int>("DiseaseCodesDiseaseCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiseasesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DiseaseCodesDiseaseCodeId", "DiseasesId");
+
+                    b.HasIndex("DiseasesId");
+
+                    b.ToTable("DiseasesToCodes", (string)null);
+                });
 
             modelBuilder.Entity("DiseaseMedicalTests", b =>
                 {
@@ -168,23 +183,18 @@ namespace Oncogenes.DAL.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("CodeDescription")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("CodeLevel")
-                        .HasColumnType("int");
-
                     b.Property<int>("CodeType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DiseaseId")
                         .HasColumnType("int");
 
                     b.HasKey("DiseaseCodeId");
 
-                    b.HasIndex("DiseaseId");
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("DiseaseCodes");
                 });
@@ -257,6 +267,9 @@ namespace Oncogenes.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("longtext");
+
                     b.HasKey("TreatmentId");
 
                     b.ToTable("Treatments");
@@ -275,6 +288,21 @@ namespace Oncogenes.DAL.Migrations
                     b.HasIndex("OncogeneId");
 
                     b.ToTable("OncogenesDiseases");
+                });
+
+            modelBuilder.Entity("DiseaseDiseaseCode", b =>
+                {
+                    b.HasOne("Oncogenes.Domain.DiseaseCode", null)
+                        .WithMany()
+                        .HasForeignKey("DiseaseCodesDiseaseCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oncogenes.Domain.Disease", null)
+                        .WithMany()
+                        .HasForeignKey("DiseasesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DiseaseMedicalTests", b =>
@@ -352,17 +380,6 @@ namespace Oncogenes.DAL.Migrations
                     b.Navigation("Oncogene");
                 });
 
-            modelBuilder.Entity("Oncogenes.Domain.DiseaseCode", b =>
-                {
-                    b.HasOne("Oncogenes.Domain.Disease", "Disease")
-                        .WithMany("DiseaseCodes")
-                        .HasForeignKey("DiseaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Disease");
-                });
-
             modelBuilder.Entity("OncogenesDiseases", b =>
                 {
                     b.HasOne("Oncogenes.Domain.Disease", null)
@@ -381,8 +398,6 @@ namespace Oncogenes.DAL.Migrations
             modelBuilder.Entity("Oncogenes.Domain.Disease", b =>
                 {
                     b.Navigation("Activations");
-
-                    b.Navigation("DiseaseCodes");
                 });
 
             modelBuilder.Entity("Oncogenes.Domain.Gene", b =>

@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Oncogenes.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,7 +81,8 @@ namespace Oncogenes.DAL.Migrations
                 {
                     TreatmentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Note = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,11 +96,10 @@ namespace Oncogenes.DAL.Migrations
                 {
                     DiseaseCodeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    DiseaseId = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "longtext", nullable: false),
+                    DiseaseId = table.Column<int>(type: "int", nullable: true),
+                    Code = table.Column<string>(type: "varchar(255)", nullable: false),
                     CodeType = table.Column<int>(type: "int", nullable: false),
-                    CodeDescription = table.Column<string>(type: "longtext", nullable: true),
-                    CodeLevel = table.Column<int>(type: "int", nullable: false)
+                    CodeDescription = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,8 +108,7 @@ namespace Oncogenes.DAL.Migrations
                         name: "FK_DiseaseCodes_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
                         principalTable: "Diseases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -286,6 +285,12 @@ namespace Oncogenes.DAL.Migrations
                 name: "IX_Activations_OncogeneId",
                 table: "Activations",
                 column: "OncogeneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiseaseCodes_Code",
+                table: "DiseaseCodes",
+                column: "Code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DiseaseCodes_DiseaseId",

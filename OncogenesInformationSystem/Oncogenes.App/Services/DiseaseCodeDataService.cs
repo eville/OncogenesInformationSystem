@@ -52,7 +52,7 @@ namespace Oncogenes.App.Services
             try
             {
                 var diseaseCodeJson =
-                new StringContent(JsonSerializer.Serialize(diseaseCode), Encoding.UTF8, "application/json");
+                 new StringContent(JsonSerializer.Serialize(diseaseCode), Encoding.UTF8, "application/json");
 
                 var response = await httpClient.PostAsync("api/DiseaseCode", diseaseCodeJson);
 
@@ -77,9 +77,14 @@ namespace Oncogenes.App.Services
             try
             {
                 var diseaseCodeJson =
-                new StringContent(JsonSerializer.Serialize(diseaseCode), Encoding.UTF8, "application/json");
+                 new StringContent(JsonSerializer.Serialize(diseaseCode, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve }), Encoding.UTF8, "application/json");
 
-                await httpClient.PutAsync("api/DiseaseCode", diseaseCodeJson);
+                //var response = await httpClient.PostAsync("api/DiseaseCode", diseaseCodeJson);
+
+
+
+
+                var x = await httpClient.PutAsync($"api/DiseaseCode/{diseaseCode.DiseaseCodeId}", diseaseCodeJson);
             }
             catch (Exception exception)
             {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Oncogenes.Domain
 {
@@ -7,17 +8,12 @@ namespace Oncogenes.Domain
         [Key]
         public int DiseaseCodeId { get; set; }
         
-        public int DiseaseId { get; set; }
-
         public string Code { get; set; }
 
         public int CodeType { get; set; } = 0;
 
         public string? CodeDescription { get; set; }
-        
-        public int? CodeLevel { get; set; }
 
-        public Disease Disease { get; set; }
-
+        public List<Disease> Diseases { get; set; } = new();
     }
 }
