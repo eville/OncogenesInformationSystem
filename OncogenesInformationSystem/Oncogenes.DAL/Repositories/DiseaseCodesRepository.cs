@@ -26,21 +26,9 @@ namespace Oncogenes.DAL.Repositories
 
         public async Task<DiseaseCode> AddDiseaseCodeAsync(DiseaseCode code)
         {
-            var compareInfo = CultureInfo.InvariantCulture.CompareInfo;
-
-            var existingCode = appDbContext.DiseaseCodes
-            .AsEnumerable().FirstOrDefault(d => compareInfo.Compare(d.Code, code.Code, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0);
-
-            if (existingCode != null)
-            {
-                throw new Exception("Tokiu numeriu kodas jau yra sistemoje.");
-            }
-            else
-            {
-                await appDbContext.DiseaseCodes.AddAsync(code);
-                await appDbContext.SaveChangesAsync();
-                return code;
-            }
+            await appDbContext.DiseaseCodes.AddAsync(code);
+            await appDbContext.SaveChangesAsync();
+            return code;
 
         }
 

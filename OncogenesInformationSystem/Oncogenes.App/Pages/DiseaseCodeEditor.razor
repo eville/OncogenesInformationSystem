@@ -1,0 +1,55 @@
+﻿@page "/diseasecodeeditor"
+
+
+<h2>Ligų kodai</h2>
+
+@if (DiseaseCodes == null)
+{
+    <p><em>Kraunasi...</em></p>
+}
+else
+{
+   @foreach (var diseaseCode in DiseaseCodes)
+    {
+        <EditForm Model="@diseaseCode" OnValidSubmit="@HandleValidSubmit">
+            <div class="card">
+            <span class="card-body">
+
+                <div class="form-group">
+                    <label for="LevelDropdown">Pasirinkite tipą:</label>
+                    <InputSelect id="LevelDropdown" class="form-control" @bind-Value="@diseaseCode.CodeType">
+                        @foreach (DiseaseCodeTypes level in Enum.GetValues(typeof(DiseaseCodeTypes)))
+                        {
+                            <option value="@((int)level)">@GetDescription(level)</option>
+                        }
+                    </InputSelect>
+                </div>
+
+
+                    <label for="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")">Kodas:</label>
+                    <InputText id="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")" class="form-control col-md-4" @bind-Value="diseaseCode.Code" />
+
+                    <label for="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")">Diagnozė:</label>
+                    <InputText id="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")" class="form-control col-md-4" @bind-Value="diseaseCode.CodeDescription" />
+
+                @if (diseaseCode != null)
+                {
+                    <div class="form-group">
+                        <label for="LevelDropdown">Pasirinkite lygį:</label>
+                        <InputSelect id="LevelDropdown" class="form-control" @bind-Value="@diseaseCode.CodeLevel">
+                            @foreach (var level in Enum.GetValues(typeof(TLKCodeLevel)))
+                            {
+                                <option value="@((int)level)">@level</option>
+
+                            }
+                        </InputSelect>
+                    </div>
+                }
+                   
+            </span>
+               
+           </div>
+        @*  </div>*@
+        </EditForm>
+    }
+}

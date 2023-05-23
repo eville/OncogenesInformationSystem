@@ -15,7 +15,7 @@ namespace Oncogenes.Domain
 
         public string? CodeDescription { get; set; }
         
-        public int CodeLevel { get; set; }
+        public int? CodeLevel { get; set; }
 
         public Disease Disease { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oncogenes.DAL.Repositories;
-using Oncogenes.DAL.Repository;
 using Oncogenes.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -77,8 +76,17 @@ namespace Oncogenes.Api.Controllers
 
         // DELETE api/<DiseaseCodeController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<DiseaseCode>> DeleteDiseaseCode(int id)
         {
+            var diseaseCode = await diseaseCodeRepository.GetDiseaseCodeById(id);
+            if (diseaseCode == null)
+            {
+                return NotFound();
+            }
+
+            await diseaseCodeRepository.DeleteDiseaseCodeAsync(diseaseCode);
+
+            return NoContent();
         }
     }
 }

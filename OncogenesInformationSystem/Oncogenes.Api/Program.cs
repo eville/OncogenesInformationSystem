@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Oncogenes.DAL;
+using Oncogenes.DAL.Repositories;
 using Oncogenes.DAL.Repository;
 using System.Text.Json.Serialization;
 
@@ -19,6 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OncogenesContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IOncogenesRepository, OncogenesRepository>();
 builder.Services.AddScoped<IDiseasesRepository, DiseasesRepository>();
+builder.Services.AddScoped<IDiseaseCodesRepository, DiseaseCodesRepository>();
 
 var app = builder.Build();
 

@@ -73,7 +73,7 @@ namespace Oncogenes.Api.Controllers
 
         // DELETE api/<DiseaseController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Disease>> DeleteStudent(int id)
+        public async Task<ActionResult<Disease>> DeleteDisease(int id)
         {
             var disease = await diseasesRepository.GetDiseaseById(id);
             if (disease == null)
