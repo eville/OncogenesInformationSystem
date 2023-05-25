@@ -71,92 +71,40 @@ namespace Oncogenes.DAL.Repository
                         .Include(b => b.DiseaseCodes).ThenInclude(d => d.Diseases)
                          .FirstOrDefault(b => b.Id == disease.Id);
 
-
-
-             foreach(var dCode in disease.DiseaseCodes)
+            // add missing codes
+            foreach(var dCode in disease.DiseaseCodes)
             {
                 if(dCode != null && !existingDisease.DiseaseCodes.Any(x => x.DiseaseCodeId == dCode.DiseaseCodeId))
                 {
                     var existingCode = appDbContext.DiseaseCodes.FirstOrDefault(p => p.DiseaseCodeId == dCode.DiseaseCodeId);
                     existingDisease.DiseaseCodes.Add(existingCode);
-                    existingCode.Diseases.Add(existingDisease);
-                    
+                    existingCode.Diseases.Add(existingDisease);                  
                 }
             }
 
             appDbContext.SaveChanges();
 
-            //appDbContext.Entry(existingDisease).CurrentValues.SetValues(disease);
 
-            //foreach (var dCode in disease.DiseaseCodes)
-            //{
-            //    if(dCode != null && !existingDisease.DiseaseCodes.Any( x=> x.DiseaseCodeId == dCode.DiseaseCodeId))
-            //    {
-            //        var existingDiseaseCode = existingDisease.DiseaseCodes.FirstOrDefault(p => p.DiseaseCodeId == dCode.DiseaseCodeId);
+            foreach (var dCode in existingDisease.DiseaseCodes)
+            {
+                if (dCode != null && !disease.DiseaseCodes.Any(x => x.DiseaseCodeId == dCode.DiseaseCodeId))
+                {
+                    var codeToRemove = appDbContext.DiseaseCodes.FirstOrDefault(p => p.DiseaseCodeId == dCode.DiseaseCodeId);
 
-            //        existingDisease.DiseaseCodes.Add(existingDiseaseCode);
-            //    }
-            //}
+                    var existingDiseaseToRemove = appDbContext.Diseases.FirstOrDefault(b => b.Id == disease.Id);
 
-            //foreach (var oCode in existingDisease.DiseaseCodes)
-            //{
-            //    if (oCode != null && !disease.DiseaseCodes.Any(x => x.DiseaseCodeId == oCode.DiseaseCodeId))
-            //    {
-            //        var existingDiseaseCode = existingDisease.DiseaseCodes.FirstOrDefault(p => p.DiseaseCodeId == oCode.DiseaseCodeId);
+                    if (codeToRemove != null)
+                    {
+                        //existingDisease.DiseaseCodes.Remove(codeToRemove);
+                        codeToRemove.Diseases.Remove(existingDiseaseToRemove);
+                    }
+                }
+            }
 
-            //        existingDisease.DiseaseCodes.Remove(existingDiseaseCode);
-            //    }
-            //}
+            appDbContext.SaveChanges();
 
-            // appDbContext.SaveChanges();
-
+           
             return existingDisease;
         }
-
-
-
-        //public async Task<Disease> UpdateDiseaseAsync(Disease disease)
-        //{
-        //    var existingDisease = appDbContext.Diseases
-        //                .Include(b => b.DiseaseCodes)
-        //                 .FirstOrDefault(b => b.Id == disease.Id);
-
-        //    if (existingDisease == null)
-        //    {
-        //        appDbContext.Add(disease);
-        //    }
-        //    else
-        //    {
-        //        appDbContext.Entry(existingDisease).CurrentValues.SetValues(disease);
-
-        //        foreach (var dCode in disease.DiseaseCodes)
-        //        {
-        //            var existingDiseaseCode = existingDisease.DiseaseCodes
-        //                .FirstOrDefault(p => p.DiseaseCodeId == dCode.DiseaseCodeId);
-
-        //            if (existingDiseaseCode == null)
-        //            {
-        //                existingDisease.DiseaseCodes.Add(dCode);
-
-        //            }
-        //            else
-        //            {
-        //                appDbContext.Entry(existingDiseaseCode).CurrentValues.SetValues(dCode);
-        //            }
-        //        }
-
-        //        foreach (var dCode in existingDisease.DiseaseCodes)
-        //        {
-        //            if (!disease.DiseaseCodes.Any(p => p.DiseaseCodeId == dCode.DiseaseCodeId))
-        //            {
-        //                appDbContext.Remove(dCode);
-        //            }
-        //        }
-        //    }
-
-        //    appDbContext.SaveChanges();
-
-        //    return existingDisease;
-        //}
     }
 }
