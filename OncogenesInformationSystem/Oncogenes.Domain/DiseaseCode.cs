@@ -8,7 +8,7 @@ namespace Oncogenes.Domain
         [Key]
         public int DiseaseCodeId { get; set; }
         
-        public string Code { get; set; }
+        public string DiseaseClassificator { get; set; }
 
         public int CodeType { get; set; } = 0;
 

@@ -70,13 +70,5 @@ namespace Oncogenes.App.Pages
         {
             ShowForm = !ShowForm;
         }
-
-        //private void UpdateVisibility(ChangeEventArgs e)
-        //{
-        //    if (Enum.TryParse(typeof(DiseaseCodeTypes), e.Value.ToString(), out var selectedValue))
-        //    {
-        //        ShowLevel = (DiseaseCodeTypes)selectedValue != DiseaseCodeTypes.ORPHA;
-        //    }
-        //}
     }
 }

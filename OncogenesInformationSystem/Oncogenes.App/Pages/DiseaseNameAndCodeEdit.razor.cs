@@ -8,6 +8,9 @@ namespace Oncogenes.App.Pages
     public partial class DiseaseNameAndCodeEdit
     {
         [Inject]
+        NavigationManager NavigationManager { get; set; }
+        
+        [Inject]
         public ILogger<DiseaseNameAndCodeEdit>? Logger { get; set; }
         [Inject]
         public IDiseasesDataService? DiseasesDataService { get; set; }
@@ -42,15 +45,12 @@ namespace Oncogenes.App.Pages
                     Disease = new Disease();
                 }
 
-                IEnumerable<DiseaseCode> diseaseCodes = await DiseaseCodesDataService?.GetDiseaseCodes();
-
-                filteredCodes = diseaseCodes?.Where(dc1 => !Disease.DiseaseCodes.Any(alreadyIn => alreadyIn.DiseaseCodeId == dc1.DiseaseCodeId)).ToList();
-
-                options = filteredCodes?.Select(d => $"{d.Code} {d.CodeDescription}").ToArray();
+                    GetCodesForDropDown();
 
             }
             catch (Exception ex)
             {
+                string message = ex.Message;
                 Logger.LogError($"Exception occured while manipulating disease codes in {nameof(DiseaseNameAndCodeEdit)}", ex.Message);
             }
             
@@ -68,6 +68,9 @@ namespace Oncogenes.App.Pages
             }
             
            await DiseasesDataService?.UpdateDisease(disease);
+
+            //NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+            StateHasChanged();
         }
 
         public static string GetDescription(Enum value)
@@ -99,17 +102,29 @@ namespace Oncogenes.App.Pages
         {
            if(!string.IsNullOrEmpty(SelectedOption))
             {
-                var code = SelectedOption.Split(" ")[0];
-                string[] words = code.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries);
-
-                var diseaseCode = filteredCodes.FirstOrDefault(dc => dc.Code.Contains(words[0]));
-
-                if (diseaseCode != null) 
+                foreach(var code in filteredCodes)
                 {
-                    Disease.DiseaseCodes.Add(diseaseCode);
-                    await DiseasesDataService?.UpdateDisease(Disease);
-                }
+                    if (SelectedOption.Contains(code.DiseaseClassificator))
+                    {
+                        Disease.DiseaseCodes.Add(code);
+                        await DiseasesDataService?.UpdateDisease(Disease);
+                        SelectedOption = string.Empty;
+                        filteredCodes.Remove(code);
+                        break;
+                    }
+                }                
             }
+
+            GetCodesForDropDown();
+        }
+
+        private async Task GetCodesForDropDown()
+        {
+            IEnumerable<DiseaseCode> diseaseCodes = await DiseaseCodesDataService?.GetDiseaseCodes();
+
+            filteredCodes = diseaseCodes?.Where(dc1 => !Disease.DiseaseCodes.Any(alreadyIn => alreadyIn.DiseaseCodeId == dc1.DiseaseCodeId)).ToList();
+
+            options = filteredCodes?.Select(d => $"{d.DiseaseClassificator} {d.CodeDescription}").ToArray();
         }
     }
 }

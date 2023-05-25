@@ -22,11 +22,6 @@ namespace Oncogenes.App.Pages
             Diseases = (await DiseasesDataService.GetDiseases()).ToList();
         }
 
-        private async Task EditDiseaseAsync(Disease disease)
-        {
-            await DiseasesDataService.UpdateDisease(disease);
-
-        }
 
         private async Task DeleteDiseaseAsync(int id)
         {

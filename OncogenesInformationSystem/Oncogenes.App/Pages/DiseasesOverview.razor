@@ -19,10 +19,10 @@ else
                     @if (disease.DiseaseCodes.Where(x => x.CodeType == 0).Any())
                     {
                         <h5>TLK</h5>
-                        var tlkCodes = disease.DiseaseCodes.Where(x => x.CodeType == 0).OrderBy(d => d.Code);
+                        var tlkCodes = disease.DiseaseCodes.Where(x => x.CodeType == 0).OrderBy(d => d.DiseaseClassificator);
                         @foreach (var diseaseCode in tlkCodes)
                         {
-                            <p>@diseaseCode.Code @diseaseCode.CodeDescription</p>
+                            <p>@diseaseCode.DiseaseClassificator @diseaseCode.CodeDescription</p>
                             
                         }
                     }
@@ -30,13 +30,13 @@ else
 
                     @if (disease.DiseaseCodes.Where(x => x.CodeType > 0).Any())
                     {
-                        var otherDiseaseCodes = disease.DiseaseCodes.Where(x => x.CodeType > 0).OrderBy(d => d.Code);
+                        var otherDiseaseCodes = disease.DiseaseCodes.Where(x => x.CodeType > 0).OrderBy(d => d.DiseaseClassificator);
 
                         <p>Kodai pagal ORPHA ar kitas sistemas:</p>
 
                         @foreach (var otherDiseaseCode in otherDiseaseCodes)
                         {
-                            <p>@otherDiseaseCode.Code @otherDiseaseCode.CodeDescription?</p>
+                            <p>@otherDiseaseCode.DiseaseClassificator @otherDiseaseCode.CodeDescription?</p>
 
                         }
                     }

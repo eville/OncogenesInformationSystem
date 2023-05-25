@@ -61,7 +61,7 @@ namespace Oncogenes.Api.Controllers
                 return NotFound();
             }
 
-            existingDiseaseCode.Code = diseaseCode.Code;
+            existingDiseaseCode.DiseaseClassificator = diseaseCode.DiseaseClassificator;
             existingDiseaseCode.CodeDescription = diseaseCode.CodeDescription;
             existingDiseaseCode.CodeType = diseaseCode.CodeType;
 

@@ -1,8 +1,6 @@
 ﻿using Oncogenes.Domain;
-using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Text;
-using System.Net.Http;
 
 namespace Oncogenes.App.Services
 {
@@ -23,7 +21,7 @@ namespace Oncogenes.App.Services
             try
             {
                 IEnumerable<Disease>? allDiseases = await JsonSerializer.DeserializeAsync<IEnumerable<Disease>>
-                          (await this.httpClient.GetStreamAsync($"api/Diseases"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve });
+                          (await this.httpClient.GetStreamAsync($"api/Diseases"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                 return allDiseases;
             }
             catch (Exception exception)
@@ -38,7 +36,7 @@ namespace Oncogenes.App.Services
             try
             {
                 Disease? disease = await JsonSerializer.DeserializeAsync<Disease>
-                          (await this.httpClient.GetStreamAsync($"api/Diseases/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve });
+                          (await this.httpClient.GetStreamAsync($"api/Diseases/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                 return disease;
             }
             catch (Exception exception)
@@ -52,10 +50,10 @@ namespace Oncogenes.App.Services
         {
             try
             {
-                var diseaseJson =
-                new StringContent(JsonSerializer.Serialize(disease, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve }), Encoding.UTF8, "application/json");
+                var diseaseInJson =
+                 new StringContent(JsonSerializer.Serialize(disease), Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PostAsync("api/Diseases", diseaseJson);
+                var response = await httpClient.PostAsync("api/Diseases", diseaseInJson);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -77,16 +75,9 @@ namespace Oncogenes.App.Services
         {
             try
             {
-                var diseaseJson =
-                new StringContent(JsonSerializer.Serialize(disease, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.Preserve }), Encoding.UTF8, "application/json");
-
-                //var x = await httpClient.PutAsync($"api/DiseaseCode/{diseaseCode.DiseaseCodeId}", diseaseCodeJson);
 
                 var diseaseInJson =
                 new StringContent(JsonSerializer.Serialize(disease), Encoding.UTF8, "application/json");
-
-                //await _httpClient.PutAsync("api/employee", employeeJson);
-
 
                 await httpClient.PutAsync($"api/Diseases", diseaseInJson);
             }

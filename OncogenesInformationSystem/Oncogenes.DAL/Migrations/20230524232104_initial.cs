@@ -16,6 +16,22 @@ namespace Oncogenes.DAL.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "DiseaseCodes",
+                columns: table => new
+                {
+                    DiseaseCodeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    DiseaseClassificator = table.Column<string>(type: "longtext", nullable: false),
+                    CodeType = table.Column<int>(type: "int", nullable: false),
+                    CodeDescription = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiseaseCodes", x => x.DiseaseCodeId);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Diseases",
                 columns: table => new
                 {
@@ -91,24 +107,27 @@ namespace Oncogenes.DAL.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DiseaseCodes",
+                name: "DiseaseDiseaseCodes",
                 columns: table => new
                 {
-                    DiseaseCodeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    DiseaseId = table.Column<int>(type: "int", nullable: true),
-                    Code = table.Column<string>(type: "varchar(255)", nullable: false),
-                    CodeType = table.Column<int>(type: "int", nullable: false),
-                    CodeDescription = table.Column<string>(type: "longtext", nullable: true)
+                    DiseaseCodeId = table.Column<int>(type: "int", nullable: false),
+                    DiseaseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiseaseCodes", x => x.DiseaseCodeId);
+                    table.PrimaryKey("PK_DiseaseDiseaseCodes", x => new { x.DiseaseCodeId, x.DiseaseId });
                     table.ForeignKey(
-                        name: "FK_DiseaseCodes_Diseases_DiseaseId",
+                        name: "FK_DiseaseDiseaseCodes_DiseaseCodes_DiseaseCodeId",
+                        column: x => x.DiseaseCodeId,
+                        principalTable: "DiseaseCodes",
+                        principalColumn: "DiseaseCodeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DiseaseDiseaseCodes_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
                         principalTable: "Diseases",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -287,14 +306,8 @@ namespace Oncogenes.DAL.Migrations
                 column: "OncogeneId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiseaseCodes_Code",
-                table: "DiseaseCodes",
-                column: "Code",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DiseaseCodes_DiseaseId",
-                table: "DiseaseCodes",
+                name: "IX_DiseaseDiseaseCodes_DiseaseId",
+                table: "DiseaseDiseaseCodes",
                 column: "DiseaseId");
 
             migrationBuilder.CreateIndex(
@@ -327,7 +340,7 @@ namespace Oncogenes.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DiseaseCodes");
+                name: "DiseaseDiseaseCodes");
 
             migrationBuilder.DropTable(
                 name: "DiseaseMedicalTests");
@@ -343,6 +356,9 @@ namespace Oncogenes.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "OncogenesDiseases");
+
+            migrationBuilder.DropTable(
+                name: "DiseaseCodes");
 
             migrationBuilder.DropTable(
                 name: "MedicalTests");

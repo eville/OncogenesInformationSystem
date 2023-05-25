@@ -30,39 +30,39 @@ VALUES
 ('Bosutinib'),
 ('Nilotinib');
 
-INSERT INTO diseases (Name)
+INSERT INTO diseases (Id, Name)
 VALUES
-('Krūties vėžys'),
-('Stemplės vėžys'),
-('Odos vėžys'),
-('Kasos vėžys'),
-('Gimdos kaklelio vėžys'),
-('Gliobastoma'),
-('Šlapimo pūslės vėžys'),
-('Kiaušidžių vėžys'),
-('Skrandžio vėžys'),
-('Storosios žarnos vėžys'),
-('Tiesiosios žarnos vėžys'),
-('Ryklės vėžys'),
-('Gerklų vėžys'),
-('Smulkialąstelinis plaučių vėžys'),
-('Nesmulkialąstelinis plaučių vėžys'),
-('Ankstyvosios priešinės liaukos vėžys'),
-('Gimdos kūno vėžys'),
-('Inkstų vėžys'),
-('Burnos ertmės vėžys');
+(1, 'Krūties vėžys'),
+(2, 'Stemplės vėžys'),
+(3, 'Odos vėžys'),
+(4, 'Kasos vėžys'),
+(5, 'Gimdos kaklelio vėžys'),
+(6, 'Gliobastoma'),
+(7, 'Šlapimo pūslės vėžys'),
+(8, 'Kiaušidžių vėžys'),
+(9, 'Skrandžio vėžys'),
+(10, 'Storosios žarnos vėžys'),
+(11, 'Tiesiosios žarnos vėžys'),
+(12, 'Ryklės vėžys'),
+(13, 'Gerklų vėžys'),
+(14, 'Smulkialąstelinis plaučių vėžys'),
+(15, 'Nesmulkialąstelinis plaučių vėžys'),
+(16, 'Ankstyvosios priešinės liaukos vėžys'),
+(17, 'Gimdos kūno vėžys'),
+(18, 'Inkstų vėžys'),
+(19, 'Burnos ertmės vėžys');
 
-INSERT INTO oncogenes.diseasecodes (DiseaseId, Code, CodeType,  CodeDescription, CodeLevel)
+INSERT INTO oncogenes.diseasecodes (DiseaseClassificator, CodeType,  CodeDescription)
 VALUES 
-(1, 'C 50.0', 0, 'Spenelis ir areolė', 1),
-(1, 'C 50.1', 0, 'Krūties centrinė dalis', 2),
-(1, 'C 50.2', 0, 'Krūties viršutinis ir vidinis kvadrantas', 2),
-(1, 'C 50.3', 0, 'Krūties apatinis ir vidinis kvadrantas', 2),
-(1, 'C 50.4', 0, 'Krūties viršutinis ir išorinis kvadrantas', 2),
-(1, 'C 50.5', 0, 'Krūties apatinis ir išorinis kvadrantas', 2),
-(1, 'C 50.6', 0, 'Krūties pažastinė dalis', 2),
-(1, 'C 50.8', 0, 'Krūties išplitęs pažeidimas', 2),
-(1, 'C 50.9', 0, 'Krūtis, nepatikslinta', 2); 
+('C 50.0', 0, 'Spenelis ir areolė'),
+('C 50.1', 0, 'Krūties centrinė dalis'),
+('C 50.2', 0, 'Krūties viršutinis ir vidinis kvadrantas'),
+('C 50.3', 0, 'Krūties apatinis ir vidinis kvadrantas'),
+('C 50.4', 0, 'Krūties viršutinis ir išorinis kvadrantas'),
+('C 50.5', 0, 'Krūties apatinis ir išorinis kvadrantas'),
+('C 50.6', 0, 'Krūties pažastinė dalis'),
+('C 50.8', 0, 'Krūties išplitęs pažeidimas'),
+('C 50.9', 0, 'Krūtis, nepatikslinta'); 
 
 INSERT INTO activations (OncogeneId, MutationRemark, ActionabilityRank, DevelopmentStatus, TestingRequired,
   TrialStatus, CompletionStatus, Info, NumberOfPatients, TreatedNumber, ControlNumber, ControlTreatment,
@@ -90,7 +90,7 @@ VALUES
   (5, 16),
   (6, 15);
   
-INSERT INTO medicaltests (Name, Note) VALUES 
+INSERT INTO medicaltests (Id, Name, Note) VALUES 
 ('Anamnezės surinkimas', ''),
 ('Objektyvus būklės įvertinimas, palpacijos', ''),
 ('bendras kraujo tyrimas', ''),

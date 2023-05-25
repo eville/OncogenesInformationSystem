@@ -18,13 +18,10 @@ namespace Oncogenes.Domain
 
         public string? TumorTypes { get; set; }
 
-        [JsonIgnore]
         public List<Disease> Diseases { get; set; } = new();
 
-        [JsonIgnore]
         public List<Drug> Drugs { get; set; } = new();
         
-        [JsonIgnore]
         public List<Activation> Activations { get; set; } = new();
 
     }

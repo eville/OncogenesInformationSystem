@@ -19,19 +19,19 @@ namespace Oncogenes.DAL.Migrations
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("DiseaseDiseaseCode", b =>
+            modelBuilder.Entity("DiseaseDiseaseCodes", b =>
                 {
-                    b.Property<int>("DiseaseCodesDiseaseCodeId")
+                    b.Property<int>("DiseaseCodeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DiseasesId")
+                    b.Property<int>("DiseaseId")
                         .HasColumnType("int");
 
-                    b.HasKey("DiseaseCodesDiseaseCodeId", "DiseasesId");
+                    b.HasKey("DiseaseCodeId", "DiseaseId");
 
-                    b.HasIndex("DiseasesId");
+                    b.HasIndex("DiseaseId");
 
-                    b.ToTable("DiseasesToCodes", (string)null);
+                    b.ToTable("DiseaseDiseaseCodes");
                 });
 
             modelBuilder.Entity("DiseaseMedicalTests", b =>
@@ -178,20 +178,17 @@ namespace Oncogenes.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("CodeDescription")
                         .HasColumnType("longtext");
 
                     b.Property<int>("CodeType")
                         .HasColumnType("int");
 
-                    b.HasKey("DiseaseCodeId");
+                    b.Property<string>("DiseaseClassificator")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
+                    b.HasKey("DiseaseCodeId");
 
                     b.ToTable("DiseaseCodes");
                 });
@@ -287,17 +284,17 @@ namespace Oncogenes.DAL.Migrations
                     b.ToTable("OncogenesDiseases");
                 });
 
-            modelBuilder.Entity("DiseaseDiseaseCode", b =>
+            modelBuilder.Entity("DiseaseDiseaseCodes", b =>
                 {
                     b.HasOne("Oncogenes.Domain.DiseaseCode", null)
                         .WithMany()
-                        .HasForeignKey("DiseaseCodesDiseaseCodeId")
+                        .HasForeignKey("DiseaseCodeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Oncogenes.Domain.Disease", null)
                         .WithMany()
-                        .HasForeignKey("DiseasesId")
+                        .HasForeignKey("DiseaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

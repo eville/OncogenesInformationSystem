@@ -12,7 +12,7 @@
             <div class="card">
             <span class="card-body">
                 <label for="title">Kodas:</label>
-                <input type="text" id="title" class="form-control" @bind="@DiseaseCode.Code" />
+                <input type="text" id="title" class="form-control" @bind="@DiseaseCode.DiseaseClassificator" />
                 <label for="title">Diagnozė:</label>
                 <input type="text" id="title" class="form-control" @bind="@DiseaseCode.CodeDescription" />
                         <div class="form-group">
@@ -66,7 +66,7 @@ else
 
 
                     <label for="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")">Kodas:</label>
-                    <InputText id="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")" class="form-control col-md-4" @bind-Value="diseaseCode.Code" />
+                    <InputText id="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")" class="form-control col-md-4" @bind-Value="diseaseCode.DiseaseClassificator" />
 
                     <label for="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")">Diagnozė:</label>
                     <InputText id="@($"DiseaseCode{diseaseCode.DiseaseCodeId}")" class="form-control col-md-4" @bind-Value="diseaseCode.CodeDescription" />

@@ -62,10 +62,13 @@ namespace Oncogenes.DAL
                );
 
             modelBuilder.Entity<Disease>()
-            .HasMany(d => d.DiseaseCodes)
-            .WithMany(dc => dc.Diseases)
-            .UsingEntity(j => j.ToTable("DiseasesToCodes"));
-
+              .HasMany(o => o.DiseaseCodes)
+              .WithMany(d => d.Diseases)
+                   .UsingEntity<Dictionary<string, object>>(
+                      "DiseaseDiseaseCodes",
+                      j => j.HasOne<DiseaseCode>().WithMany().HasForeignKey("DiseaseCodeId"),
+                      j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId")
+              );
 
             modelBuilder.Entity<MedicalTest>()
                 .HasMany(m => m.Diseases)
@@ -85,9 +88,9 @@ namespace Oncogenes.DAL
                    j => j.HasOne<Treatment>().WithMany().HasForeignKey("TreatmentId")
                );
 
-            modelBuilder.Entity<DiseaseCode>()
-            .HasIndex(e => e.Code)
-            .IsUnique();
+            //modelBuilder.Entity<Domain.DiseaseCode>()
+            //.HasIndex(e => e.Code)
+            //.IsUnique();
 
 
         }
