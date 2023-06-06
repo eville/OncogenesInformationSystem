@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Oncogenes.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,13 +35,13 @@ namespace Oncogenes.DAL.Migrations
                 name: "Diseases",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    DiseaseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Diseases", x => x.Id);
+                    table.PrimaryKey("PK_Diseases", x => x.DiseaseId);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -126,30 +126,30 @@ namespace Oncogenes.DAL.Migrations
                         name: "FK_DiseaseDiseaseCodes_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
                         principalTable: "Diseases",
-                        principalColumn: "Id",
+                        principalColumn: "DiseaseId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DiseaseMedicalTests",
+                name: "DiseaseMedicalTest",
                 columns: table => new
                 {
-                    DiseaseId = table.Column<int>(type: "int", nullable: false),
-                    MedicalTestId = table.Column<int>(type: "int", nullable: false)
+                    DiseasesDiseaseId = table.Column<int>(type: "int", nullable: false),
+                    MedicalTestsMedicalTestId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiseaseMedicalTests", x => new { x.DiseaseId, x.MedicalTestId });
+                    table.PrimaryKey("PK_DiseaseMedicalTest", x => new { x.DiseasesDiseaseId, x.MedicalTestsMedicalTestId });
                     table.ForeignKey(
-                        name: "FK_DiseaseMedicalTests_Diseases_DiseaseId",
-                        column: x => x.DiseaseId,
+                        name: "FK_DiseaseMedicalTest_Diseases_DiseasesDiseaseId",
+                        column: x => x.DiseasesDiseaseId,
                         principalTable: "Diseases",
-                        principalColumn: "Id",
+                        principalColumn: "DiseaseId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DiseaseMedicalTests_MedicalTests_MedicalTestId",
-                        column: x => x.MedicalTestId,
+                        name: "FK_DiseaseMedicalTest_MedicalTests_MedicalTestsMedicalTestId",
+                        column: x => x.MedicalTestsMedicalTestId,
                         principalTable: "MedicalTests",
                         principalColumn: "MedicalTestId",
                         onDelete: ReferentialAction.Cascade);
@@ -185,7 +185,7 @@ namespace Oncogenes.DAL.Migrations
                         name: "FK_Activations_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
                         principalTable: "Diseases",
-                        principalColumn: "Id");
+                        principalColumn: "DiseaseId");
                     table.ForeignKey(
                         name: "FK_Activations_Oncogenes_OncogeneId",
                         column: x => x.OncogeneId,
@@ -196,24 +196,49 @@ namespace Oncogenes.DAL.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OncogeneResistanceToDrug",
+                name: "DiseaseGene",
                 columns: table => new
                 {
-                    DrugId = table.Column<int>(type: "int", nullable: false),
-                    OncogeneId = table.Column<int>(type: "int", nullable: false)
+                    DiseasesDiseaseId = table.Column<int>(type: "int", nullable: false),
+                    OncogenesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OncogeneResistanceToDrug", x => new { x.DrugId, x.OncogeneId });
+                    table.PrimaryKey("PK_DiseaseGene", x => new { x.DiseasesDiseaseId, x.OncogenesId });
                     table.ForeignKey(
-                        name: "FK_OncogeneResistanceToDrug_Drugs_DrugId",
-                        column: x => x.DrugId,
+                        name: "FK_DiseaseGene_Diseases_DiseasesDiseaseId",
+                        column: x => x.DiseasesDiseaseId,
+                        principalTable: "Diseases",
+                        principalColumn: "DiseaseId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DiseaseGene_Oncogenes_OncogenesId",
+                        column: x => x.OncogenesId,
+                        principalTable: "Oncogenes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "DrugGene",
+                columns: table => new
+                {
+                    DrugsDrugId = table.Column<int>(type: "int", nullable: false),
+                    OncogenesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DrugGene", x => new { x.DrugsDrugId, x.OncogenesId });
+                    table.ForeignKey(
+                        name: "FK_DrugGene_Drugs_DrugsDrugId",
+                        column: x => x.DrugsDrugId,
                         principalTable: "Drugs",
                         principalColumn: "DrugId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OncogeneResistanceToDrug_Oncogenes_OncogeneId",
-                        column: x => x.OncogeneId,
+                        name: "FK_DrugGene_Oncogenes_OncogenesId",
+                        column: x => x.OncogenesId,
                         principalTable: "Oncogenes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -221,49 +246,24 @@ namespace Oncogenes.DAL.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OncogenesDiseases",
+                name: "DiseaseTreatment",
                 columns: table => new
                 {
-                    DiseaseId = table.Column<int>(type: "int", nullable: false),
-                    OncogeneId = table.Column<int>(type: "int", nullable: false)
+                    DiseasesDiseaseId = table.Column<int>(type: "int", nullable: false),
+                    TreatmentsTreatmentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OncogenesDiseases", x => new { x.DiseaseId, x.OncogeneId });
+                    table.PrimaryKey("PK_DiseaseTreatment", x => new { x.DiseasesDiseaseId, x.TreatmentsTreatmentId });
                     table.ForeignKey(
-                        name: "FK_OncogenesDiseases_Diseases_DiseaseId",
-                        column: x => x.DiseaseId,
+                        name: "FK_DiseaseTreatment_Diseases_DiseasesDiseaseId",
+                        column: x => x.DiseasesDiseaseId,
                         principalTable: "Diseases",
-                        principalColumn: "Id",
+                        principalColumn: "DiseaseId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OncogenesDiseases_Oncogenes_OncogeneId",
-                        column: x => x.OncogeneId,
-                        principalTable: "Oncogenes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "DiseaseTreatments",
-                columns: table => new
-                {
-                    DiseaseId = table.Column<int>(type: "int", nullable: false),
-                    TreatmentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DiseaseTreatments", x => new { x.DiseaseId, x.TreatmentId });
-                    table.ForeignKey(
-                        name: "FK_DiseaseTreatments_Diseases_DiseaseId",
-                        column: x => x.DiseaseId,
-                        principalTable: "Diseases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DiseaseTreatments_Treatments_TreatmentId",
-                        column: x => x.TreatmentId,
+                        name: "FK_DiseaseTreatment_Treatments_TreatmentsTreatmentId",
+                        column: x => x.TreatmentsTreatmentId,
                         principalTable: "Treatments",
                         principalColumn: "TreatmentId",
                         onDelete: ReferentialAction.Cascade);
@@ -271,29 +271,34 @@ namespace Oncogenes.DAL.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DrugActivation",
+                name: "ActivationDrug",
                 columns: table => new
                 {
-                    ActivationId = table.Column<int>(type: "int", nullable: false),
-                    DrugId = table.Column<int>(type: "int", nullable: false)
+                    ActivationsActivationId = table.Column<int>(type: "int", nullable: false),
+                    DrugsDrugId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DrugActivation", x => new { x.ActivationId, x.DrugId });
+                    table.PrimaryKey("PK_ActivationDrug", x => new { x.ActivationsActivationId, x.DrugsDrugId });
                     table.ForeignKey(
-                        name: "FK_DrugActivation_Activations_ActivationId",
-                        column: x => x.ActivationId,
+                        name: "FK_ActivationDrug_Activations_ActivationsActivationId",
+                        column: x => x.ActivationsActivationId,
                         principalTable: "Activations",
                         principalColumn: "ActivationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DrugActivation_Drugs_DrugId",
-                        column: x => x.DrugId,
+                        name: "FK_ActivationDrug_Drugs_DrugsDrugId",
+                        column: x => x.DrugsDrugId,
                         principalTable: "Drugs",
                         principalColumn: "DrugId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActivationDrug_DrugsDrugId",
+                table: "ActivationDrug",
+                column: "DrugsDrugId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Activations_DiseaseId",
@@ -311,51 +316,49 @@ namespace Oncogenes.DAL.Migrations
                 column: "DiseaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiseaseMedicalTests_MedicalTestId",
-                table: "DiseaseMedicalTests",
-                column: "MedicalTestId");
+                name: "IX_DiseaseGene_OncogenesId",
+                table: "DiseaseGene",
+                column: "OncogenesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiseaseTreatments_TreatmentId",
-                table: "DiseaseTreatments",
-                column: "TreatmentId");
+                name: "IX_DiseaseMedicalTest_MedicalTestsMedicalTestId",
+                table: "DiseaseMedicalTest",
+                column: "MedicalTestsMedicalTestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DrugActivation_DrugId",
-                table: "DrugActivation",
-                column: "DrugId");
+                name: "IX_DiseaseTreatment_TreatmentsTreatmentId",
+                table: "DiseaseTreatment",
+                column: "TreatmentsTreatmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OncogeneResistanceToDrug_OncogeneId",
-                table: "OncogeneResistanceToDrug",
-                column: "OncogeneId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OncogenesDiseases_OncogeneId",
-                table: "OncogenesDiseases",
-                column: "OncogeneId");
+                name: "IX_DrugGene_OncogenesId",
+                table: "DrugGene",
+                column: "OncogenesId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ActivationDrug");
+
+            migrationBuilder.DropTable(
                 name: "DiseaseDiseaseCodes");
 
             migrationBuilder.DropTable(
-                name: "DiseaseMedicalTests");
+                name: "DiseaseGene");
 
             migrationBuilder.DropTable(
-                name: "DiseaseTreatments");
+                name: "DiseaseMedicalTest");
 
             migrationBuilder.DropTable(
-                name: "DrugActivation");
+                name: "DiseaseTreatment");
 
             migrationBuilder.DropTable(
-                name: "OncogeneResistanceToDrug");
+                name: "DrugGene");
 
             migrationBuilder.DropTable(
-                name: "OncogenesDiseases");
+                name: "Activations");
 
             migrationBuilder.DropTable(
                 name: "DiseaseCodes");
@@ -365,9 +368,6 @@ namespace Oncogenes.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Treatments");
-
-            migrationBuilder.DropTable(
-                name: "Activations");
 
             migrationBuilder.DropTable(
                 name: "Drugs");

@@ -45,7 +45,7 @@ namespace Oncogenes.Api.Controllers
             if (ModelState.IsValid)
             {
                 var addedDisease = await diseasesRepository.AddDiseaseAsync(disease);
-                return CreatedAtAction(nameof(AddDisease), new { id = addedDisease.Id }, addedDisease);
+                return CreatedAtAction(nameof(AddDisease), new { id = addedDisease.DiseaseId }, addedDisease);
             }
             return BadRequest(ModelState);
         }

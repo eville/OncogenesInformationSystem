@@ -1,0 +1,79 @@
+﻿@page "/diseasemedtestedit"
+@page "/diseasemedtestedit/{DiseaseId}"
+
+@if (Disease == null)
+{
+    <p><em>Kraunasi...</em></p>
+}
+else
+{
+    <h2>Ligų kodai</h2>
+
+@*
+    <div class="col">
+        @if (ShowForm)
+        {
+            <div class="mb-3">
+                <form @onsubmit="AddMedTestAsync">
+                    <div class="card">
+                        <span class="card-body">
+                            <label for="title">Kodas:</label>
+                            <input type="text" id="title" class="form-control" @bind="@DiseaseCode.DiseaseClassificator" />
+                            <label for="title">Diagnozė:</label>
+                            <input type="text" id="title" class="form-control" @bind="@DiseaseCode.CodeDescription" />
+                            <div class="form-group">
+                                <label for="TypeDropdown">Pasirinkite tipą:</label>
+                                <InputSelect id="TypeDropdown" class="form-control" @bind-Value="@DiseaseCode.CodeType">
+                                    >
+                                    @foreach (DiseaseCodeTypes level in Enum.GetValues(typeof(DiseaseCodeTypes)))
+                                    {
+                                        <option value="@((int)level)">@GetDescription(level)</option>
+                                    }
+                                </InputSelect>
+                            </div>
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Išsaugoti naują kodą</button>
+                            </div>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="mb-3 mt-3 col-1">
+                <button class="btn btn-primary" @onclick="ToggleForm">Pridėti kodą</button>
+            </div>
+        }
+    </div>*@
+
+    @if (Disease == null)
+    {
+        <p><em>Kraunasi...</em></p>
+    }
+    else
+    {
+        @foreach (var medTest in Disease.MedicalTests)
+        {
+
+            <EditForm Model="@medTest">
+              
+                        <div class="form-group">
+                            <label for="MedicalTestName">Tyrimo pavadinimas:</label>
+                            <InputText id="MedicalTestName" class="form-control col-md-4" @bind-Value="medTest.Name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="MedicalTestNote">Diagnozė:</label>
+                            <InputText id="MedicalTestNote" class="form-control col-md-4" @bind-Value="medTest.Note" />
+                        </div>
+
+                <button @onclick="@(() => HandleValidSubmitAsync(medTest))" class="btn btn-primary">Išsaugoti</button>
+                <button @onclick="@(() => DeleteMedicalTest(medTest.MedicalTestId))" class="btn btn-danger">Ištrinti</button>
+            </EditForm>
+          
+           
+        }
+    }
+}

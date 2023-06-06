@@ -65,7 +65,7 @@ else
           <tr>
              <td> @GetDescription((DiseaseCodeTypes)diseaseCode.CodeType) </td>
             <td> @diseaseCode.DiseaseClassificator @diseaseCode.CodeDescription</td>
-            <td> <button class="btn btn-danger" @onclick="() => DeleteDiseaseCodeAsync(Disease.Id, diseaseCode.DiseaseCodeId)">Ištrinti</button> </td>
+            <td> <button class="btn btn-danger" @onclick="() => DeleteDiseaseCodeAsync(Disease.DiseaseId, diseaseCode.DiseaseCodeId)">Ištrinti</button> </td>
           </tr>           
         }
         </tbody>

@@ -69,8 +69,7 @@ namespace Oncogenes.App.Pages
             
            await DiseasesDataService?.UpdateDisease(disease);
 
-            //NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
-            StateHasChanged();
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         }
 
         public static string GetDescription(Enum value)

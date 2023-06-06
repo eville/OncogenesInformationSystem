@@ -24,42 +24,11 @@ namespace Oncogenes.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<Gene>()
-                .HasMany(o => o.Diseases)
-                .WithMany(d => d.Oncogenes)
-                 .UsingEntity<Dictionary<string, object>>(
-                    "OncogenesDiseases",
-                    j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
-                    j => j.HasOne<Gene>().WithMany().HasForeignKey("OncogeneId")
-            );
-
-            modelBuilder.Entity<Activation>()
-                .HasOne(a => a.Oncogene)
-                .WithMany(o => o.Activations)
-                .HasForeignKey(a => a.OncogeneId);
-
-            modelBuilder.Entity<Activation>()
-                .HasMany(a => a.Drugs)
-                .WithMany(d => d.Activations)
-                 .UsingEntity<Dictionary<string, object>>(
-                    "DrugActivation",
-                    j => j.HasOne<Drug>().WithMany().HasForeignKey("DrugId"),
-                    j => j.HasOne<Activation>().WithMany().HasForeignKey("ActivationId")
-                );
-
-            modelBuilder.Entity<Gene>()
-               .HasMany(o => o.Drugs)
-               .WithMany(d => d.Oncogenes)
-                    .UsingEntity<Dictionary<string, object>>(
-                       "OncogeneResistanceToDrug",
-                       j => j.HasOne<Drug>().WithMany().HasForeignKey("DrugId"),
-                       j => j.HasOne<Gene>().WithMany().HasForeignKey("OncogeneId")
-               );
 
             modelBuilder.Entity<Disease>()
               .HasMany(o => o.DiseaseCodes)
@@ -70,26 +39,71 @@ namespace Oncogenes.DAL
                       j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId")
               );
 
-            modelBuilder.Entity<MedicalTest>()
-                .HasMany(m => m.Diseases)
-                .WithMany(d => d.MedicalTests)
-                .UsingEntity<Dictionary<string, object>>(
-                    "DiseaseMedicalTests",
-                    j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
-                    j => j.HasOne<MedicalTest>().WithMany().HasForeignKey("MedicalTestId")
-                );
 
-            modelBuilder.Entity<Treatment>()
-               .HasMany(m => m.Diseases)
-               .WithMany(d => d.Treatments)
-               .UsingEntity<Dictionary<string, object>>(
-                   "DiseaseTreatments",
-                   j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
-                   j => j.HasOne<Treatment>().WithMany().HasForeignKey("TreatmentId")
-               );
 
-            //modelBuilder.Entity<Domain.DiseaseCode>()
-            //.HasIndex(e => e.Code)
+
+            //modelBuilder.Entity<Gene>()
+            //    .HasMany(o => o.Diseases)
+            //    .WithMany(d => d.Oncogenes)
+            //     .UsingEntity<Dictionary<string, object>>(
+            //        "OncogenesDiseases",
+            //        j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
+            //        j => j.HasOne<Gene>().WithMany().HasForeignKey("OncogeneId")
+            //);
+
+            //modelBuilder.Entity<Activation>()
+            //    .HasOne(a => a.Oncogene)
+            //    .WithMany(o => o.Activations)
+            //    .HasForeignKey(a => a.OncogeneId);
+
+            //modelBuilder.Entity<Activation>()
+            //    .HasMany(a => a.Drugs)
+            //    .WithMany(d => d.Activations)
+            //     .UsingEntity<Dictionary<string, object>>(
+            //        "DrugActivation",
+            //        j => j.HasOne<Drug>().WithMany().HasForeignKey("DrugId"),
+            //        j => j.HasOne<Activation>().WithMany().HasForeignKey("ActivationId")
+            //    );
+
+            //modelBuilder.Entity<Gene>()
+            //   .HasMany(o => o.Drugs)
+            //   .WithMany(d => d.Oncogenes)
+            //        .UsingEntity<Dictionary<string, object>>(
+            //           "OncogeneResistanceToDrug",
+            //           j => j.HasOne<Drug>().WithMany().HasForeignKey("DrugId"),
+            //           j => j.HasOne<Gene>().WithMany().HasForeignKey("OncogeneId")
+            //   );
+
+            //modelBuilder.Entity<Disease>()
+
+            //  .HasMany(o => o.DiseaseCodes)
+            //  .WithMany(d => d.Diseases)
+            //       .UsingEntity<Dictionary<string, object>>(
+            //          "DiseaseDiseaseCodes",
+            //          j => j.HasOne<DiseaseCode>().WithMany().HasForeignKey("DiseaseCodeId"),
+            //          j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId")
+            //  );
+
+            //modelBuilder.Entity<MedicalTest>()
+            //    .HasMany(m => m.Diseases)
+            //    .WithMany(d => d.MedicalTests)
+            //    .UsingEntity<Dictionary<string, object>>(
+            //        "DiseaseMedicalTests",
+            //        j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
+            //        j => j.HasOne<MedicalTest>().WithMany().HasForeignKey("MedicalTestId")
+            //    );
+
+            //modelBuilder.Entity<Treatment>()
+            //   .HasMany(m => m.Diseases)
+            //   .WithMany(d => d.Treatments)
+            //   .UsingEntity<Dictionary<string, object>>(
+            //       "DiseaseTreatments",
+            //       j => j.HasOne<Disease>().WithMany().HasForeignKey("DiseaseId"),
+            //       j => j.HasOne<Treatment>().WithMany().HasForeignKey("TreatmentId")
+            //   );
+
+            //modelBuilder.Entity<DiseaseCode>()
+            //.HasIndex(e => e.DiseaseClassificator)
             //.IsUnique();
 
 

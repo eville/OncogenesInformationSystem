@@ -83,7 +83,7 @@ namespace Oncogenes.App.Services
             }
             catch (Exception exception)
             {
-                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(UpdateDisease), $"api/Diseases/{disease.Id}", exception);
+                logger.LogError("Exception occurred in {Method} {Path} {Exception}", nameof(UpdateDisease), $"api/Diseases/{disease.DiseaseId}", exception);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Oncogenes.Domain;
 using System;
 using System.Globalization;
@@ -9,19 +10,19 @@ namespace Oncogenes.DAL.Repository
 {
     public class DiseasesRepository : IDiseasesRepository
     {
+        private readonly ILogger logger;
+
         private readonly OncogenesContext appDbContext;
-        public DiseasesRepository(OncogenesContext appDbContext)
+        public DiseasesRepository(ILogger<DiseasesRepository> logger, OncogenesContext appDbContext)
         {
+            this.logger = logger;
             this.appDbContext = appDbContext;
         }
 
         public async Task<IEnumerable<Disease>> GetAllDiseases()
         {
             return await appDbContext.Diseases
-                .Include(d => d.Oncogenes)
-                .Include(d => d.DiseaseCodes)
-                .Include(d => d.MedicalTests)
-                .Include(d => d.Treatments)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -31,7 +32,8 @@ namespace Oncogenes.DAL.Repository
                 .Include(d => d.DiseaseCodes)
                 .Include(d => d.MedicalTests)
                 .Include(d => d.Treatments)
-                .FirstOrDefaultAsync(d => d.Id == id);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(d => d.DiseaseId == id);
         }
 
         public async Task<Disease> AddDiseaseAsync(Disease disease)
@@ -64,47 +66,52 @@ namespace Oncogenes.DAL.Repository
             await appDbContext.SaveChangesAsync();
         }
 
-
+        //todo: refactor method
         public async Task<Disease> UpdateDiseaseAsync(Disease disease)
         {
-            var existingDisease = appDbContext.Diseases
-                        .Include(b => b.DiseaseCodes).ThenInclude(d => d.Diseases)
-                         .FirstOrDefault(b => b.Id == disease.Id);
 
-            // add missing codes
-            foreach(var dCode in disease.DiseaseCodes)
+            try
             {
-                if(dCode != null && !existingDisease.DiseaseCodes.Any(x => x.DiseaseCodeId == dCode.DiseaseCodeId))
+                var existingDisease = appDbContext.Diseases
+                    .Include(d => d.DiseaseCodes)
+                    .FirstOrDefault(x => x.DiseaseId == disease.DiseaseId);
+
+
+                // Disease codes removal
+                foreach (var diseaseCode in existingDisease.DiseaseCodes)
                 {
-                    var existingCode = appDbContext.DiseaseCodes.FirstOrDefault(p => p.DiseaseCodeId == dCode.DiseaseCodeId);
-                    existingDisease.DiseaseCodes.Add(existingCode);
-                    existingCode.Diseases.Add(existingDisease);                  
-                }
-            }
-
-            appDbContext.SaveChanges();
-
-
-            foreach (var dCode in existingDisease.DiseaseCodes)
-            {
-                if (dCode != null && !disease.DiseaseCodes.Any(x => x.DiseaseCodeId == dCode.DiseaseCodeId))
-                {
-                    var codeToRemove = appDbContext.DiseaseCodes.FirstOrDefault(p => p.DiseaseCodeId == dCode.DiseaseCodeId);
-
-                    var existingDiseaseToRemove = appDbContext.Diseases.FirstOrDefault(b => b.Id == disease.Id);
-
-                    if (codeToRemove != null)
+                    if (!disease.DiseaseCodes.Any(c => c.DiseaseCodeId == diseaseCode.DiseaseCodeId))
                     {
-                        //existingDisease.DiseaseCodes.Remove(codeToRemove);
-                        codeToRemove.Diseases.Remove(existingDiseaseToRemove);
+                        var existingDiseaseCode = appDbContext.DiseaseCodes.FirstOrDefault(x => x.DiseaseCodeId == diseaseCode.DiseaseCodeId);
+                        existingDisease.DiseaseCodes.Remove(existingDiseaseCode);
                     }
                 }
+
+                // Disease codes addition
+                foreach (var diseaseCode in disease.DiseaseCodes)
+                { 
+                    if(!existingDisease.DiseaseCodes.Any(c => c.DiseaseCodeId == diseaseCode.DiseaseCodeId))
+                    {
+                        var existingDiseaseCode = appDbContext.DiseaseCodes.FirstOrDefault(x => x.DiseaseCodeId == diseaseCode.DiseaseCodeId);
+                        existingDisease.DiseaseCodes.Add(existingDiseaseCode);
+                    }
+                }
+
+                appDbContext.ChangeTracker.DetectChanges();
+                var debugView = appDbContext.ChangeTracker?.DebugView.ShortView;
+
+                appDbContext.SaveChanges();
+
             }
+            catch (Exception exception)
+            {
+                logger.LogError("Exception occurred in {Method} {Class} {Exception}", nameof(UpdateDiseaseAsync), nameof(DiseasesRepository), exception);
+            }
+            //}
 
-            appDbContext.SaveChanges();
+            await appDbContext.SaveChangesAsync();
 
-           
-            return existingDisease;
+            return disease;
         }
     }
 }

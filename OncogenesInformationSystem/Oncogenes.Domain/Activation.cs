@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Oncogenes.Domain
@@ -6,6 +7,7 @@ namespace Oncogenes.Domain
     public class Activation
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ActivationId { get; set; }
 
         public int OncogeneId { get; set; }
@@ -23,7 +25,7 @@ namespace Oncogenes.Domain
         public int? TrialStatus { get; set; }
 
         public int? CompletionStatus { get; set; }
-        
+
         public string? Info { get; set; }
 
         public int? NumberOfPatients { get; set; }

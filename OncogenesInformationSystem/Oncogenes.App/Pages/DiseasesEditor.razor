@@ -45,10 +45,10 @@ else
                     <tr>
                         <td>@disease.Name</td>
                         <td>
-                            <a href="@($"diseasenameandcodeedit/{disease.Id}")" class="btn btn-primary">Redaguoti pavadinimą ir kodus</a>
-                            <a href="@($"diseaseedition/{disease.Id}")" class="btn btn-primary">Redaguoti tyrimus</a>
-                            <a href="@($"diseaseedition/{disease.Id}")" class="btn btn-primary">Redaguoti gydymo būdus</a>
-                            <button class="btn btn-danger" @onclick="() => DeleteDiseaseAsync(disease.Id)">Ištrinti</button>
+                            <a href="@($"diseasenameandcodeedit/{disease.DiseaseId}")" class="btn btn-primary">Redaguoti pavadinimą ir kodus</a>
+                            <a href="@($"diseasemedtestedit/{disease.DiseaseId}")" class="btn btn-primary">Redaguoti tyrimus</a>
+                            <a href="@($"diseasemedtestedit/{disease.DiseaseId}")" class="btn btn-primary">Redaguoti gydymo būdus</a>
+                            <button class="btn btn-danger" @onclick="() => DeleteDiseaseAsync(disease.DiseaseId)">Ištrinti</button>
                         </td>
                     </tr>
                 }

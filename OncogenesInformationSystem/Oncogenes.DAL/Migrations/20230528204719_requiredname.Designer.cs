@@ -11,8 +11,8 @@ using Oncogenes.DAL;
 namespace Oncogenes.DAL.Migrations
 {
     [DbContext(typeof(OncogenesContext))]
-    [Migration("20230524232104_initial")]
-    partial class initial
+    [Migration("20230528204719_requiredname")]
+    partial class requiredname
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,21 @@ namespace Oncogenes.DAL.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ActivationDrug", b =>
+                {
+                    b.Property<int>("ActivationsActivationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DrugsDrugId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActivationsActivationId", "DrugsDrugId");
+
+                    b.HasIndex("DrugsDrugId");
+
+                    b.ToTable("ActivationDrug");
+                });
 
             modelBuilder.Entity("DiseaseDiseaseCodes", b =>
                 {
@@ -37,64 +52,64 @@ namespace Oncogenes.DAL.Migrations
                     b.ToTable("DiseaseDiseaseCodes");
                 });
 
-            modelBuilder.Entity("DiseaseMedicalTests", b =>
+            modelBuilder.Entity("DiseaseGene", b =>
                 {
-                    b.Property<int>("DiseaseId")
+                    b.Property<int>("DiseasesDiseaseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MedicalTestId")
+                    b.Property<int>("OncogenesId")
                         .HasColumnType("int");
 
-                    b.HasKey("DiseaseId", "MedicalTestId");
+                    b.HasKey("DiseasesDiseaseId", "OncogenesId");
 
-                    b.HasIndex("MedicalTestId");
+                    b.HasIndex("OncogenesId");
 
-                    b.ToTable("DiseaseMedicalTests");
+                    b.ToTable("DiseaseGene");
                 });
 
-            modelBuilder.Entity("DiseaseTreatments", b =>
+            modelBuilder.Entity("DiseaseMedicalTest", b =>
                 {
-                    b.Property<int>("DiseaseId")
+                    b.Property<int>("DiseasesDiseaseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TreatmentId")
+                    b.Property<int>("MedicalTestsMedicalTestId")
                         .HasColumnType("int");
 
-                    b.HasKey("DiseaseId", "TreatmentId");
+                    b.HasKey("DiseasesDiseaseId", "MedicalTestsMedicalTestId");
 
-                    b.HasIndex("TreatmentId");
+                    b.HasIndex("MedicalTestsMedicalTestId");
 
-                    b.ToTable("DiseaseTreatments");
+                    b.ToTable("DiseaseMedicalTest");
                 });
 
-            modelBuilder.Entity("DrugActivation", b =>
+            modelBuilder.Entity("DiseaseTreatment", b =>
                 {
-                    b.Property<int>("ActivationId")
+                    b.Property<int>("DiseasesDiseaseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DrugId")
+                    b.Property<int>("TreatmentsTreatmentId")
                         .HasColumnType("int");
 
-                    b.HasKey("ActivationId", "DrugId");
+                    b.HasKey("DiseasesDiseaseId", "TreatmentsTreatmentId");
 
-                    b.HasIndex("DrugId");
+                    b.HasIndex("TreatmentsTreatmentId");
 
-                    b.ToTable("DrugActivation");
+                    b.ToTable("DiseaseTreatment");
                 });
 
-            modelBuilder.Entity("OncogeneResistanceToDrug", b =>
+            modelBuilder.Entity("DrugGene", b =>
                 {
-                    b.Property<int>("DrugId")
+                    b.Property<int>("DrugsDrugId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OncogeneId")
+                    b.Property<int>("OncogenesId")
                         .HasColumnType("int");
 
-                    b.HasKey("DrugId", "OncogeneId");
+                    b.HasKey("DrugsDrugId", "OncogenesId");
 
-                    b.HasIndex("OncogeneId");
+                    b.HasIndex("OncogenesId");
 
-                    b.ToTable("OncogeneResistanceToDrug");
+                    b.ToTable("DrugGene");
                 });
 
             modelBuilder.Entity("Oncogenes.Domain.Activation", b =>
@@ -162,7 +177,7 @@ namespace Oncogenes.DAL.Migrations
 
             modelBuilder.Entity("Oncogenes.Domain.Disease", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DiseaseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -170,7 +185,7 @@ namespace Oncogenes.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("DiseaseId");
 
                     b.ToTable("Diseases");
                 });
@@ -272,19 +287,19 @@ namespace Oncogenes.DAL.Migrations
                     b.ToTable("Treatments");
                 });
 
-            modelBuilder.Entity("OncogenesDiseases", b =>
+            modelBuilder.Entity("ActivationDrug", b =>
                 {
-                    b.Property<int>("DiseaseId")
-                        .HasColumnType("int");
+                    b.HasOne("Oncogenes.Domain.Activation", null)
+                        .WithMany()
+                        .HasForeignKey("ActivationsActivationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("OncogeneId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DiseaseId", "OncogeneId");
-
-                    b.HasIndex("OncogeneId");
-
-                    b.ToTable("OncogenesDiseases");
+                    b.HasOne("Oncogenes.Domain.Drug", null)
+                        .WithMany()
+                        .HasForeignKey("DrugsDrugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DiseaseDiseaseCodes", b =>
@@ -302,62 +317,62 @@ namespace Oncogenes.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DiseaseMedicalTests", b =>
+            modelBuilder.Entity("DiseaseGene", b =>
                 {
                     b.HasOne("Oncogenes.Domain.Disease", null)
                         .WithMany()
-                        .HasForeignKey("DiseaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Oncogenes.Domain.MedicalTest", null)
-                        .WithMany()
-                        .HasForeignKey("MedicalTestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DiseaseTreatments", b =>
-                {
-                    b.HasOne("Oncogenes.Domain.Disease", null)
-                        .WithMany()
-                        .HasForeignKey("DiseaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Oncogenes.Domain.Treatment", null)
-                        .WithMany()
-                        .HasForeignKey("TreatmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DrugActivation", b =>
-                {
-                    b.HasOne("Oncogenes.Domain.Activation", null)
-                        .WithMany()
-                        .HasForeignKey("ActivationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Oncogenes.Domain.Drug", null)
-                        .WithMany()
-                        .HasForeignKey("DrugId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OncogeneResistanceToDrug", b =>
-                {
-                    b.HasOne("Oncogenes.Domain.Drug", null)
-                        .WithMany()
-                        .HasForeignKey("DrugId")
+                        .HasForeignKey("DiseasesDiseaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Oncogenes.Domain.Gene", null)
                         .WithMany()
-                        .HasForeignKey("OncogeneId")
+                        .HasForeignKey("OncogenesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiseaseMedicalTest", b =>
+                {
+                    b.HasOne("Oncogenes.Domain.Disease", null)
+                        .WithMany()
+                        .HasForeignKey("DiseasesDiseaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oncogenes.Domain.MedicalTest", null)
+                        .WithMany()
+                        .HasForeignKey("MedicalTestsMedicalTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiseaseTreatment", b =>
+                {
+                    b.HasOne("Oncogenes.Domain.Disease", null)
+                        .WithMany()
+                        .HasForeignKey("DiseasesDiseaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oncogenes.Domain.Treatment", null)
+                        .WithMany()
+                        .HasForeignKey("TreatmentsTreatmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DrugGene", b =>
+                {
+                    b.HasOne("Oncogenes.Domain.Drug", null)
+                        .WithMany()
+                        .HasForeignKey("DrugsDrugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oncogenes.Domain.Gene", null)
+                        .WithMany()
+                        .HasForeignKey("OncogenesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -375,21 +390,6 @@ namespace Oncogenes.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Oncogene");
-                });
-
-            modelBuilder.Entity("OncogenesDiseases", b =>
-                {
-                    b.HasOne("Oncogenes.Domain.Disease", null)
-                        .WithMany()
-                        .HasForeignKey("DiseaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Oncogenes.Domain.Gene", null)
-                        .WithMany()
-                        .HasForeignKey("OncogeneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Oncogenes.Domain.Disease", b =>

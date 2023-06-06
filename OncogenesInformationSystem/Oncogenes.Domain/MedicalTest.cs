@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Oncogenes.Domain
@@ -6,6 +7,7 @@ namespace Oncogenes.Domain
     public class MedicalTest
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MedicalTestId { get; set; }
 
         [Required]
