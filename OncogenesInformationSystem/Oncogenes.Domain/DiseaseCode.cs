@@ -18,7 +18,6 @@ namespace Oncogenes.Domain
 
         public string? CodeDescription { get; set; }
 
-        //[JsonIgnore]
         public List<Disease> Diseases { get; set; } = new();
     }
 }
