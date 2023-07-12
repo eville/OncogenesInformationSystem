@@ -30,8 +30,8 @@ namespace Oncogenes.DAL.Repository
         {
             return await appDbContext.Diseases
                 .Include(d => d.DiseaseCodes)
-                .Include(d => d.MedicalTests)
-                .Include(d => d.Treatments)
+                //.Include(d => d.MedicalTests)
+                //.Include(d => d.Treatments)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.DiseaseId == id);
         }

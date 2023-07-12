@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Oncogenes.Domain
 {
@@ -17,6 +18,7 @@ namespace Oncogenes.Domain
 
         public string? CodeDescription { get; set; }
 
+        //[JsonIgnore]
         public List<Disease> Diseases { get; set; } = new();
     }
 }

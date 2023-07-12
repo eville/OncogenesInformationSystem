@@ -9,7 +9,6 @@ namespace Oncogenes.Domain
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DiseaseId { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public List<DiseaseCode> DiseaseCodes { get; set; } = new();

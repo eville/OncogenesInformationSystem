@@ -1,6 +1,7 @@
 ﻿using Oncogenes.Domain;
 using System.Text.Json;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Oncogenes.App.Services
 {
@@ -36,7 +37,7 @@ namespace Oncogenes.App.Services
             try
             {
                 Disease? disease = await JsonSerializer.DeserializeAsync<Disease>
-                          (await this.httpClient.GetStreamAsync($"api/Diseases/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                          (await this.httpClient.GetStreamAsync($"api/Diseases/{id}"), new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve, PropertyNameCaseInsensitive = true }); ; ;
                 return disease;
             }
             catch (Exception exception)
