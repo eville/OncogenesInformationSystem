@@ -37,7 +37,7 @@ namespace Oncogenes.App.Services
             try
             {
                 Disease? disease = await JsonSerializer.DeserializeAsync<Disease>
-                          (await this.httpClient.GetStreamAsync($"api/Diseases/{id}"), new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve, PropertyNameCaseInsensitive = true }); ; ;
+                          (await this.httpClient.GetStreamAsync($"api/Diseases/{id}"), new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve, PropertyNameCaseInsensitive = true });
                 return disease;
             }
             catch (Exception exception)
