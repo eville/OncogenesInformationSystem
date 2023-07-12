@@ -97,7 +97,13 @@ namespace Oncogenes.App.Pages
             public string SelectedOption { get; set; }
         }
 
-        private async Task HandleValidSubmit()
+        private async Task HandleDiseaseNameValidSubmit()
+        {
+           await DiseasesDataService?.UpdateDisease(Disease);
+        }
+
+
+        private async Task HandleDiseaseCodesValidSubmit()
         {
            if(!string.IsNullOrEmpty(SelectedOption))
             {

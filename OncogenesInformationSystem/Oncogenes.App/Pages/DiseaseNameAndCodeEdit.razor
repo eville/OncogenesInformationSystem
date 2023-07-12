@@ -12,11 +12,16 @@ else
             <div class="col">
         <EditForm Model="@Disease"></EditForm>
         <h4>Ligos klasifikacija </h4>
-        <div>
+        <div >
             <label for="diseaseName" class="col-form-label col-md-3">Ligos pavadinimas: </label>
-            <div class="col-md-8">
-                <InputText id="diseaseName" class="form-control col-md-8" @bind-Value="@Disease.Name" placeholder="Įveskite ligos pavadinimą"></InputText>
-            </div>
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <InputText id="diseaseName" class="form-control" @bind-Value="@Disease.Name" placeholder="Įveskite ligos pavadinimą"></InputText>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary" @onclick="() => HandleDiseaseNameValidSubmit()">Patvirtinti pavadinimą</button>
+                    </div>
+            </div>     
         </div>
         <h5 class="mt-3">Ligos kodai</h5>
        
@@ -24,7 +29,7 @@ else
                 <div class="mb-3">
                 @if (ShowForm)
                 {
-                    <EditForm Model="SelectedOption" OnValidSubmit="HandleValidSubmit">
+                    <EditForm Model="SelectedOption" OnValidSubmit="HandleDiseaseCodesValidSubmit">
                             <div class="mb-3 form-group">
                             <label for="selectField">Select option:</label>
                                 <InputSelect id="selectField" @bind-Value="SelectedOption" class="form-control">

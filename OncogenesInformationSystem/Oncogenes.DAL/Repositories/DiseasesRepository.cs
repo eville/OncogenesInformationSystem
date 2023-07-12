@@ -76,6 +76,8 @@ namespace Oncogenes.DAL.Repository
                     .Include(d => d.DiseaseCodes)
                     .FirstOrDefault(x => x.DiseaseId == disease.DiseaseId);
 
+                existingDisease.Name = disease.Name;
+                
 
                 // Disease codes removal
                 foreach (var diseaseCode in existingDisease.DiseaseCodes)

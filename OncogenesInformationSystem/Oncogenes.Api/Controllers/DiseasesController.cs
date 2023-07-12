@@ -50,25 +50,9 @@ namespace Oncogenes.Api.Controllers
             return BadRequest(ModelState);
         }
 
-        // PUT api/<DiseaseController>/5
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult<Disease>> Put(int id, Disease disease
         [HttpPut]
         public async Task<IActionResult> UpdateDiseaseAsync(Disease disease)
         {
-
-            //var existingDisease = await diseasesRepository.GetDiseaseById(disease.Id);
-            //if (existingDisease == null)
-            //{
-            //    return NotFound();
-            //}
-
-           
-            //existingDisease.DiseaseCodes = disease.DiseaseCodes;
-            //existingDisease.Oncogenes = disease.Oncogenes;
-            //existingDisease.Treatments = disease.Treatments;
-            //existingDisease.MedicalTests = disease.MedicalTests;
-
             await diseasesRepository.UpdateDiseaseAsync(disease);
             return Ok(disease);
         }
